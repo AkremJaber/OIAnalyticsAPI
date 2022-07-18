@@ -5,7 +5,6 @@ using Microsoft.PowerBI.Api;
 using Microsoft.PowerBI.Api.Models;
 using Microsoft.Rest;
 using OIAnalyticsAPI.Configs;
-using OIAnalyticsAPI.DTOS;
 using OIAnalyticsAPI.IService;
 using OIAnalyticsAPI.Models;
 using System;

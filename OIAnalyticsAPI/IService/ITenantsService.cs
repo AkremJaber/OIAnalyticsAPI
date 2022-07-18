@@ -1,7 +1,6 @@
 ﻿using Microsoft.PowerBI.Api;
 using Microsoft.PowerBI.Api.Models;
 using OIAnalyticsAPI.Configs;
-using OIAnalyticsAPI.DTOS;
 using OIAnalyticsAPI.Models;
 using System;
 using System.Collections.Generic;
