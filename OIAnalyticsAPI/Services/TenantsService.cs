@@ -63,6 +63,7 @@ namespace OIAnalyticsAPI.Services
             PowerBIClient pbiClient = this.GetPowerBiClient();
             Tenant tenant = new Tenant();
             // create new app workspace
+            
             GroupCreationRequest request = new GroupCreationRequest(name);
             Group workspace = pbiClient.Groups.CreateGroup(request);
             tenant.CCC_Name = name;

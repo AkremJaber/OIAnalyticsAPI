@@ -42,6 +42,7 @@ namespace OIAnalyticsAPI
             services.AddScoped<IEmbeddedDashboardService, EmbeddedDashboardService>();
             services.AddScoped<IEmbeddedDataSetService, EmbeddedDataSetService>();
             services.AddScoped<ITenantDetailsService, TenantDetailsService>();
+            //DBCONTEXT CONFIG
             string connectString = Configuration["ConnectionStrings:ConnectString"];
             services.AddDbContext <OIAnalyticsDBconfig>(opt => opt.UseSqlServer(connectString));
             services.AddControllers();

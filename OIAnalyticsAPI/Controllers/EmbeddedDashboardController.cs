@@ -25,5 +25,11 @@ namespace OIAnalyticsAPI.Controllers
             return dash;
 
         }
+        [HttpPost("{CCC_WorkspaceId}/{name}")]
+        public EmbeddedDashboardViewModel PostDashboard(string CCC_WorkspaceId, string name)
+        {
+            var dash = embeddedDash.PostDashboardInGrp(CCC_WorkspaceId, name);
+            return dash;
+        }
     }
 }

@@ -53,6 +53,30 @@ namespace OIAnalyticsAPI.Services
             };
             return t;
         }
+        public EmbeddedDashboardViewModel PostDashboardInGrp(string CCC_WorkspaceId, string name)
+        {
+            PowerBIClient pbiClient = GetPowerBiClient();
+            AddDashboardRequest request = new AddDashboardRequest(name);
+            Guid WSID = new Guid(CCC_WorkspaceId);
+            Dashboard dash = pbiClient.Dashboards.AddDashboardInGroup(WSID, request);
+            var t = new EmbeddedDashboardViewModel
+            {
+                Name=name,
+                DashboardId = dash.Id.ToString(),
+                EmbedUrl = dash.EmbedUrl,
+                
+            };
+            return t;
+
+        }
+        //public EmbeddedDashboardViewModel DeleteDashboardInGrp(string CCC_WorkspaceId, string DashboardId)
+        //{
+        //    PowerBIClient pbiClient = GetPowerBiClient();
+        //    EmbeddedDashboardViewModel dash = GetDashboard(CCC_WorkspaceId, DashboardId);
+        //    Guid WSID = new Guid(CCC_WorkspaceId);
+             
+        //}
+
         //public EmbeddedDashboardViewModel DeleteDashboard(string CCC_WorkspaceId, string DashboardId)
         //{
 
