@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Web;
 using Microsoft.PowerBI.Api;
@@ -81,7 +82,7 @@ namespace OIAnalyticsAPI.Services
             string adminUser = Configuration["DemoSettings:AdminUser"];
             if (!string.IsNullOrEmpty(adminUser))
             {
-                pbiClient.Groups.AddGroupUser(workspace.Id, new GroupUser
+                await pbiClient.Groups.AddGroupUserAsync(workspace.Id, new GroupUser
                 {
                     EmailAddress = adminUser,
                     GroupUserAccessRight = "Admin"
@@ -143,7 +144,7 @@ namespace OIAnalyticsAPI.Services
         }
         public async Task<Tenant> GetTenant(string CCC_WorkspaceId)
         {
-            var tenant = dbContext.CCCTenants.Where(tenant =>  tenant.CCC_WorkspaceId == CCC_WorkspaceId).FirstOrDefault();
+            var tenant = await dbContext.CCCTenants.Where(tenant => tenant.CCC_WorkspaceId == CCC_WorkspaceId).FirstOrDefaultAsync();
             return tenant;
         }
     }

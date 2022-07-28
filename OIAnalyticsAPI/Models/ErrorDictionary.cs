@@ -9,18 +9,11 @@ namespace OIAnalyticsAPI.Models
     {
         public static readonly Dictionary<int, string> ErrorCodes = new Dictionary<int, string>
        {
-           {1,"Dashboard not found" },
-           {2,"Report not found" },
-           {3,"Tenant not found" },
-           {4,"Person not found" },
-           {5,"Dataset not found" },
-
-       };
-        public static readonly Dictionary<int, Dictionary<int,string>> Errors = new Dictionary< int, Dictionary<int,string>>
-       {
-           {404,ErrorCodes }
-           
-
+           {101,"Workspace not found" },
+           {102,"Report not found" },
+           {103,"Dashboard not found" },
+           {104,"Dataset not found" },
+           {105,"Person not found" }
        };
     }
 }

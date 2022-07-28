@@ -25,12 +25,14 @@ namespace OIAnalyticsAPI.Controllers
         public async Task<ActionResult<TenantDetails>> GetDashboard(string CCC_WorkspaceId)
         {
             if (await ts.GetTenant(CCC_WorkspaceId) == null)
+            {
+                int err = 101;
                 return NotFound(new Error
                 {
-                    StatusCode = Convert.ToInt32(HttpStatusCode.NotFound),
-                    Message = "Workspace not found.",
+                    StatusCode = err,
+                    Message = ErrorDictionary.ErrorCodes[err],
                 });
-            
+            }
             var tenant = await tenantDetails.GetTenantDetails(CCC_WorkspaceId);
                 return tenant;
            

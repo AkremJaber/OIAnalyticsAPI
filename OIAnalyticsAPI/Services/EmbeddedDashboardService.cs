@@ -70,33 +70,5 @@ namespace OIAnalyticsAPI.Services
 
         }
 
-        //public async Task<EmbeddedDashboardViewModel> GetDashboards(string CCC_WorkspaceId)
-        //{
-        //    PowerBIClient pbiClient = GetPowerBiClient();
-        //    Guid WorkspaceId = new Guid(CCC_WorkspaceId);
-        //    var dash = await pbiClient.Dashboards.GetDashboardsAsync(WorkspaceId);
-            
-            
-        //    return dash;
-
-        //}
-        //public EmbeddedDashboardViewModel DeleteDashboardInGrp(string CCC_WorkspaceId, string DashboardId)
-        //{
-        //    PowerBIClient pbiClient = GetPowerBiClient();
-        //    EmbeddedDashboardViewModel dash = GetDashboard(CCC_WorkspaceId, DashboardId);
-        //    Guid WSID = new Guid(CCC_WorkspaceId);
-             
-        //}
-
-        //public EmbeddedDashboardViewModel DeleteDashboard(string CCC_WorkspaceId, string DashboardId)
-        //{
-
-        //    PowerBIClient pbiClient = this.GetPowerBiClient();
-        //    // EmbeddedDashboardViewModel dash = GetDashboard(CCC_WorkspaceId, DashboardId);
-        //    Guid workspaceIdGuid = new Guid(CCC_WorkspaceId);
-        //    Guid dashIdGuid = new Guid(DashboardId);
-        //    pbiClient.Dashboards.GetDashboardInGroup(workspaceIdGuid, dashIdGuid)
-        //}
-
     }
 }

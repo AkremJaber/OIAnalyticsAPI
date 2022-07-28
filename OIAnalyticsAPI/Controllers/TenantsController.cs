@@ -39,10 +39,11 @@ namespace OIAnalyticsAPI.Controllers
             Tenant tenant = await tenantsService.DeleteWorkspace(CCC_WorkspaceId);
             if (tenant == null)
             {
+                int err = 101;
                 return NotFound(new Error
                 {
-                    StatusCode = Convert.ToInt32(HttpStatusCode.NotFound),
-                    Message = "Tenant not found",
+                    StatusCode = err,
+                    Message = ErrorDictionary.ErrorCodes[err],
                 });
             }
             return tenant;
@@ -52,10 +53,11 @@ namespace OIAnalyticsAPI.Controllers
         {
             if (await tenantsService.GetTenant(CCC_WorkspaceId) == null)
             {
+                int err = 101;
                 return NotFound(new Error
                 {
-                    StatusCode = Convert.ToInt32(HttpStatusCode.NotFound),
-                    Message = "Workspace not found",
+                    StatusCode = err,
+                    Message = ErrorDictionary.ErrorCodes[err],
                 });
             }
             Tenant tenant = await tenantsService.GetTenant(CCC_WorkspaceId);

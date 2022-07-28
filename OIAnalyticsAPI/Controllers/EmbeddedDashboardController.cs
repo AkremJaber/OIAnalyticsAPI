@@ -16,12 +16,12 @@ namespace OIAnalyticsAPI.Controllers
     {
         public readonly IEmbeddedDashboardService embeddedDash;
         public readonly ITenantsService ts;
-        public readonly ErrorDictionary error;
-        public EmbeddedDashboardController(IEmbeddedDashboardService embeddedDash, ITenantsService ts, ErrorDictionary error)
+        
+        public EmbeddedDashboardController(IEmbeddedDashboardService embeddedDash, ITenantsService ts)
         {
             this.embeddedDash = embeddedDash;
             this.ts = ts;
-            this.error=error;
+            
         }
         [HttpGet("{CCC_WorkspaceId}/{DashboardId}")]
 
@@ -34,39 +34,26 @@ namespace OIAnalyticsAPI.Controllers
             }
             catch 
             {
-                if (await ts.GetTenant(CCC_WorkspaceId)== null)
-                return NotFound(new Error
+
+                if (await ts.GetTenant(CCC_WorkspaceId) == null)
                 {
-                    StatusCode = Convert.ToInt32(HttpStatusCode.NotFound),
-                    Message = "Workspace not found.",
-                });
-                else
+                    int err = 101;
                     return NotFound(new Error
                     {
-                        StatusCode = Convert.ToInt32(HttpStatusCode.NotFound),
-                        Message = "Dashboard not found",
+                        StatusCode = err,
+                        Message = ErrorDictionary.ErrorCodes[err],
                     });
-
+                }
+                else
+                { 
+                    int err =103;
+                    return NotFound(new Error
+                    {
+                        StatusCode = err,
+                        Message = ErrorDictionary.ErrorCodes[err],
+                    });
+                }
             }
-            //if (ts.GetTenant(CCC_WorkspaceId) == null)
-            //{
-            //    return NotFound(new Error
-            //    {
-            //        StatusCode = Convert.ToInt32(HttpStatusCode.NotFound),
-            //        Message = "Workspace not found.",
-            //    });
-            //}
-            //var dash = await embeddedDash.GetDashboard(CCC_WorkspaceId, DashboardId);
-            //if (dash == null)
-            //{
-            //    return NotFound(new Error
-            //    {
-            //        StatusCode = Convert.ToInt32(HttpStatusCode.NotFound),
-            //        Message = "Dashboard not found",
-            //    });
-            //}
-            //else
-            //    return dash;
         }
         [HttpPost("{CCC_WorkspaceId}/{name}")]
 

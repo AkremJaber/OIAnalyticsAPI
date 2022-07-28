@@ -15,9 +15,14 @@ namespace OIAnalyticsAPI.Controllers
     public class TenantsHasPersonsController : ControllerBase
     {
         public readonly ITenantsHasPersonsService tenantshaspersonService;
-        public TenantsHasPersonsController(ITenantsHasPersonsService tenantshaspersonService)
+        public readonly ITenantsService ts;
+        public readonly IPersonService ps;
+
+        public TenantsHasPersonsController(ITenantsHasPersonsService tenantshaspersonService, ITenantsService ts, IPersonService ps)
         {
             this.tenantshaspersonService = tenantshaspersonService;
+            this.ts = ts;
+            this.ps = ps;
         }
         [HttpGet]
         public IEnumerable<TenantsHasPersons> GetTenantsHasPersons()
@@ -28,17 +33,29 @@ namespace OIAnalyticsAPI.Controllers
         [HttpPost("{UID_Person}/{UID_Tenant}")]
         
         public async Task<ActionResult<TenantsHasPersons>> PostTenantsHasPersons(string UID_Person, string UID_Tenant)
-        {
-            TenantsHasPersons thp = await tenantshaspersonService.AssignTenantToPerson(UID_Person, UID_Tenant);
-            if (thp == null)
-            {
-                return NotFound(new Error
+        {   
+                if (await ts.GetTenant(UID_Tenant) == null)
                 {
-                    StatusCode = Convert.ToInt32(HttpStatusCode.NotFound),
-                    Message = "Check inputs",
-                });
-            }
+                    int err = 101;
+                    return NotFound(new Error
+                    {
+                        StatusCode = err,
+                        Message = ErrorDictionary.ErrorCodes[err],
+                    });
+                }
+                else if (await ps.GetPerson(UID_Person)== null)
+                {
+                    int err = 105;
+                    return NotFound(new Error
+                    {
+                        StatusCode = err,
+                        Message = ErrorDictionary.ErrorCodes[err],
+                    });
+                }
+            TenantsHasPersons thp = await tenantshaspersonService.AssignTenantToPerson(UID_Person, UID_Tenant);
             return thp;
+
+
         }
-    }
+   }
 }

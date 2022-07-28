@@ -33,18 +33,25 @@ namespace OIAnalyticsAPI.Controllers
             catch
             {
                 if (await ts.GetTenant(CCC_WorkspaceId) == null)
+                {
+                    int err = 101;
                     return NotFound(new Error
                     {
-                        StatusCode = Convert.ToInt32(HttpStatusCode.NotFound),
-                        Message = "Workspace not found.",
+                        StatusCode = err,
+                        Message = ErrorDictionary.ErrorCodes[err],
                     });
+                }
                 else
+                {
+                    int err = 102;
                     return NotFound(new Error
                     {
-                        StatusCode = Convert.ToInt32(HttpStatusCode.NotFound),
-                        Message = "Report not found",
+                        StatusCode = err,
+                        Message = ErrorDictionary.ErrorCodes[err],
                     });
+                }
             }
+
 
         }
 

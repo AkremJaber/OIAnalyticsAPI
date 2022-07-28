@@ -33,10 +33,11 @@ namespace OIAnalyticsAPI.Controllers
             Person person = await personService.GetPerson(UID_Person);
             if (person == null)
             {
+                int err = 105;
                 return NotFound(new Error
                 {
-                    StatusCode = Convert.ToInt32(HttpStatusCode.NotFound),
-                    Message = "Person not found",
+                    StatusCode = err,
+                    Message = ErrorDictionary.ErrorCodes[err],
                 });
             }
             return person;

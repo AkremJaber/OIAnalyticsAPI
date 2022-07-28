@@ -1,4 +1,5 @@
-﻿using OIAnalyticsAPI.Configs;
+﻿using Microsoft.EntityFrameworkCore;
+using OIAnalyticsAPI.Configs;
 using OIAnalyticsAPI.IService;
 using OIAnalyticsAPI.Models;
 using System;
@@ -23,7 +24,7 @@ namespace OIAnalyticsAPI.Services
         }
         public async Task<Person> GetPerson(string UID_Person)
         {
-            var person = dbContext.Person.Where(person => person.UID_Person == UID_Person).FirstOrDefault();
+            var person = await dbContext.Person.Where(person => person.UID_Person == UID_Person).FirstOrDefaultAsync();
             return person;
         }
     }
