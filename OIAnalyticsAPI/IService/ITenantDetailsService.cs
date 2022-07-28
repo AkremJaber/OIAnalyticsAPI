@@ -11,6 +11,6 @@ namespace OIAnalyticsAPI.IService
     {
         string GetAccessToken();
         PowerBIClient GetPowerBiClient();
-        TenantDetails GetTenantDetails(string CCC_WorkspaceId);
+        Task<TenantDetails> GetTenantDetails(string CCC_WorkspaceId);
     }
 }

@@ -9,6 +9,6 @@ namespace OIAnalyticsAPI.IService
    public interface IPersonService
     {
         IList<Person> GetPersons();
-        Person GetPerson(string UID_Person);
+        Task<Person> GetPerson(string UID_Person);
     }
 }

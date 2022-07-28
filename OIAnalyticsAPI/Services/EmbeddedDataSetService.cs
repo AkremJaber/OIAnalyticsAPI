@@ -34,15 +34,15 @@ namespace OIAnalyticsAPI.Services
             var tokenCredentials = new TokenCredentials(GetAccessToken(), "Bearer");
             return new PowerBIClient(new Uri(urlPowerBiServiceApiRoot), tokenCredentials);
         }
-        public EmbeddedDataSetViewModel GetDataSet(string CCC_WorkspaceId, string DataSetId)
+        public async Task<EmbeddedDataSetViewModel> GetDataSet(string CCC_WorkspaceId, string DataSetId)
         {
             PowerBIClient pbiClient = GetPowerBiClient();
             Guid WorkspaceId = new Guid(CCC_WorkspaceId);
             //Guid datasetId = new Guid(DataSetId);
-            var dataset = pbiClient.Datasets.GetDatasetInGroup(WorkspaceId, DataSetId);
+            var dataset = await pbiClient.Datasets.GetDatasetInGroupAsync(WorkspaceId, DataSetId);
 
             var tokenRequest = new GenerateTokenRequest(TokenAccessLevel.View);
-            var embedTokenResponse = pbiClient.Datasets.GenerateToken(WorkspaceId, DataSetId, tokenRequest);
+            var embedTokenResponse = await pbiClient.Datasets.GenerateTokenAsync(WorkspaceId, DataSetId, tokenRequest);
             var embedToken = embedTokenResponse.Token;
             var t = new EmbeddedDataSetViewModel
             {

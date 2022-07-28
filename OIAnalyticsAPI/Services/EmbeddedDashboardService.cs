@@ -34,15 +34,15 @@ namespace OIAnalyticsAPI.Services
             var tokenCredentials = new TokenCredentials(GetAccessToken(), "Bearer");
             return new PowerBIClient(new Uri(urlPowerBiServiceApiRoot), tokenCredentials);
         }
-        public EmbeddedDashboardViewModel GetDashboard(string CCC_WorkspaceId, string DashboardId)
+        public async Task<EmbeddedDashboardViewModel> GetDashboard(string CCC_WorkspaceId, string DashboardId)
         {
             PowerBIClient pbiClient = GetPowerBiClient();
             Guid WorkspaceId = new Guid(CCC_WorkspaceId);
             Guid dashboardId = new Guid(DashboardId);
-            var dashboard = pbiClient.Dashboards.GetDashboardInGroup(WorkspaceId, dashboardId);
+            var dashboard = await pbiClient.Dashboards.GetDashboardInGroupAsync(WorkspaceId, dashboardId);
 
             var tokenRequest = new GenerateTokenRequest(TokenAccessLevel.View);
-            var embedTokenResponse = pbiClient.Dashboards.GenerateToken(WorkspaceId, dashboardId, tokenRequest);
+            var embedTokenResponse = await pbiClient.Dashboards.GenerateTokenAsync(WorkspaceId, dashboardId, tokenRequest);
             var embedToken = embedTokenResponse.Token;
             var t = new EmbeddedDashboardViewModel
             {
@@ -53,12 +53,12 @@ namespace OIAnalyticsAPI.Services
             };
             return t;
         }
-        public EmbeddedDashboardViewModel PostDashboardInGrp(string CCC_WorkspaceId, string name)
+        public async Task<EmbeddedDashboardViewModel> PostDashboardInGrp(string CCC_WorkspaceId, string name)
         {
             PowerBIClient pbiClient = GetPowerBiClient();
             AddDashboardRequest request = new AddDashboardRequest(name);
             Guid WSID = new Guid(CCC_WorkspaceId);
-            Dashboard dash = pbiClient.Dashboards.AddDashboardInGroup(WSID, request);
+            Dashboard dash = await pbiClient.Dashboards.AddDashboardInGroupAsync(WSID, request);
             var t = new EmbeddedDashboardViewModel
             {
                 Name=name,
@@ -69,6 +69,17 @@ namespace OIAnalyticsAPI.Services
             return t;
 
         }
+
+        //public async Task<EmbeddedDashboardViewModel> GetDashboards(string CCC_WorkspaceId)
+        //{
+        //    PowerBIClient pbiClient = GetPowerBiClient();
+        //    Guid WorkspaceId = new Guid(CCC_WorkspaceId);
+        //    var dash = await pbiClient.Dashboards.GetDashboardsAsync(WorkspaceId);
+            
+            
+        //    return dash;
+
+        //}
         //public EmbeddedDashboardViewModel DeleteDashboardInGrp(string CCC_WorkspaceId, string DashboardId)
         //{
         //    PowerBIClient pbiClient = GetPowerBiClient();

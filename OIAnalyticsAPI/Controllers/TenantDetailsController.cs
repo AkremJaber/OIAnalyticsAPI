@@ -5,6 +5,7 @@ using OIAnalyticsAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace OIAnalyticsAPI.Controllers
@@ -14,15 +15,25 @@ namespace OIAnalyticsAPI.Controllers
     public class TenantDetailsController : ControllerBase
     {
         public readonly ITenantDetailsService tenantDetails;
-        public TenantDetailsController(ITenantDetailsService tenantDetails)
+        public readonly ITenantsService ts;
+        public TenantDetailsController(ITenantDetailsService tenantDetails, ITenantsService ts)
         {
             this.tenantDetails = tenantDetails;
+            this.ts = ts;
         }
         [HttpGet("{CCC_WorkspaceId}")]
-        public TenantDetails GetDashboard(string CCC_WorkspaceId)
+        public async Task<ActionResult<TenantDetails>> GetDashboard(string CCC_WorkspaceId)
         {
-            var tenant = tenantDetails.GetTenantDetails(CCC_WorkspaceId);
-            return tenant;
+            if (await ts.GetTenant(CCC_WorkspaceId) == null)
+                return NotFound(new Error
+                {
+                    StatusCode = Convert.ToInt32(HttpStatusCode.NotFound),
+                    Message = "Workspace not found.",
+                });
+            
+            var tenant = await tenantDetails.GetTenantDetails(CCC_WorkspaceId);
+                return tenant;
+           
 
         }
     }

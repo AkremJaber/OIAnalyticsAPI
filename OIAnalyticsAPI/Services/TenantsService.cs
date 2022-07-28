@@ -58,14 +58,14 @@ namespace OIAnalyticsAPI.Services
                    .OrderBy(tenant => tenant.CCC_Name)
                    .ToList();
         }
-        public Tenant OnboardNewTenant(string name)
+        public async Task<Tenant> OnboardNewTenant(string name)
         {
             PowerBIClient pbiClient = this.GetPowerBiClient();
             Tenant tenant = new Tenant();
             // create new app workspace
             
             GroupCreationRequest request = new GroupCreationRequest(name);
-            Group workspace = pbiClient.Groups.CreateGroup(request);
+            Group workspace = await pbiClient.Groups.CreateGroupAsync(request);
             tenant.CCC_Name = name;
             tenant.CCC_WorkspaceId = workspace.Id.ToString();
             tenant.CCC_WorkspaceUrl = "https://app.powerbi.com/groups/" + workspace.Id.ToString() + "/";
@@ -130,20 +130,20 @@ namespace OIAnalyticsAPI.Services
             }
             return null;
         }
-        public Tenant DeleteWorkspace(string CCC_WorkspaceId)
+        public async Task<Tenant> DeleteWorkspace(string CCC_WorkspaceId)
         {
 
             PowerBIClient pbiClient = this.GetPowerBiClient();
-            Tenant tenant = GetTenant(CCC_WorkspaceId);
+            Tenant tenant = await GetTenant(CCC_WorkspaceId);
             Guid workspaceIdGuid = new Guid(CCC_WorkspaceId);
-            pbiClient.Groups.DeleteGroup(workspaceIdGuid);
+            await pbiClient.Groups.DeleteGroupAsync(workspaceIdGuid);
             dbContext.CCCTenants.Remove(tenant);
             dbContext.SaveChanges();
             return tenant;
         }
-        public Tenant GetTenant(string CCC_WorkspaceId)
+        public async Task<Tenant> GetTenant(string CCC_WorkspaceId)
         {
-            var tenant = dbContext.CCCTenants.Where(tenant => tenant.CCC_WorkspaceId == CCC_WorkspaceId).FirstOrDefault();
+            var tenant = dbContext.CCCTenants.Where(tenant =>  tenant.CCC_WorkspaceId == CCC_WorkspaceId).FirstOrDefault();
             return tenant;
         }
     }

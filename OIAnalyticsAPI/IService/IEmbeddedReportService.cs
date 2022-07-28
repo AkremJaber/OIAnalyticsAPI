@@ -9,7 +9,7 @@ namespace OIAnalyticsAPI.IService
 {
    public interface IEmbeddedReportService
     {
-        EmbeddedReportViewModel GetReport(string CCC_WorkspaceId, string ReportId);
+        Task<EmbeddedReportViewModel> GetReport(string CCC_WorkspaceId, string ReportId);
         PowerBIClient GetPowerBiClient();
         string GetAccessToken();
     }

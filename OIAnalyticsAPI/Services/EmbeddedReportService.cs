@@ -34,18 +34,18 @@ namespace OIAnalyticsAPI.Services
             var tokenCredentials = new TokenCredentials(GetAccessToken(), "Bearer");
             return new PowerBIClient(new Uri(urlPowerBiServiceApiRoot), tokenCredentials);
         }
-        public EmbeddedReportViewModel GetReport(string CCC_WorkspaceId, string ReportId)
+        public async Task<EmbeddedReportViewModel> GetReport(string CCC_WorkspaceId, string ReportId)
         {
 
             PowerBIClient pbiClient = GetPowerBiClient();
             Guid WorkspaceId = new Guid(CCC_WorkspaceId);
             Guid reportId = new Guid(ReportId);
             // call to Power BI Service API to get embedding data
-            var report = pbiClient.Reports.GetReportInGroup(WorkspaceId,reportId);
+            var report = await pbiClient.Reports.GetReportInGroupAsync(WorkspaceId,reportId);
             // generate read-only embed token for the report
             var datasetId = report.DatasetId;
             var tokenRequest = new GenerateTokenRequest(TokenAccessLevel.View, datasetId);
-            var embedTokenResponse = pbiClient.Reports.GenerateToken(WorkspaceId, reportId, tokenRequest);
+            var embedTokenResponse = await pbiClient.Reports.GenerateTokenAsync(WorkspaceId, reportId, tokenRequest);
             var embedToken = embedTokenResponse.Token;
 
             // return report embedding data to caller

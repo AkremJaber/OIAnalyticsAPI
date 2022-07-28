@@ -21,7 +21,7 @@ namespace OIAnalyticsAPI.Services
                    .Select(person => person)
                    .ToList();
         }
-        public Person GetPerson(string UID_Person)
+        public async Task<Person> GetPerson(string UID_Person)
         {
             var person = dbContext.Person.Where(person => person.UID_Person == UID_Person).FirstOrDefault();
             return person;

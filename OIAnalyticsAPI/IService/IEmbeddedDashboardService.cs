@@ -11,7 +11,8 @@ namespace OIAnalyticsAPI.IService
     {
         string GetAccessToken();
         PowerBIClient GetPowerBiClient();
-        EmbeddedDashboardViewModel GetDashboard(string CCC_WorkspaceId, string DashboardId);
-        EmbeddedDashboardViewModel PostDashboardInGrp(string CCC_WorkspaceId, string name);
+        Task<EmbeddedDashboardViewModel> GetDashboard(string CCC_WorkspaceId, string DashboardId);
+        Task<EmbeddedDashboardViewModel> PostDashboardInGrp(string CCC_WorkspaceId, string name);
+        //Task<EmbeddedDashboardViewModel> GetDashboards(string CCC_WorkspaceId);
     }
 }

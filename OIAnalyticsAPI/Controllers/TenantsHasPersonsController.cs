@@ -5,6 +5,7 @@ using OIAnalyticsAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace OIAnalyticsAPI.Controllers
@@ -25,9 +26,18 @@ namespace OIAnalyticsAPI.Controllers
             return tenantshaspersons;
         }
         [HttpPost("{UID_Person}/{UID_Tenant}")]
-        public TenantsHasPersons PostTenantsHasPersons(string UID_Person, string UID_Tenant)
+        
+        public async Task<ActionResult<TenantsHasPersons>> PostTenantsHasPersons(string UID_Person, string UID_Tenant)
         {
-            TenantsHasPersons thp = tenantshaspersonService.AssignTenantToPerson(UID_Person, UID_Tenant);
+            TenantsHasPersons thp = await tenantshaspersonService.AssignTenantToPerson(UID_Person, UID_Tenant);
+            if (thp == null)
+            {
+                return NotFound(new Error
+                {
+                    StatusCode = Convert.ToInt32(HttpStatusCode.NotFound),
+                    Message = "Check inputs",
+                });
+            }
             return thp;
         }
     }

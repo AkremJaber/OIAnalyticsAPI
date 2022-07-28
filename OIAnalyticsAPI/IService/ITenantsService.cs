@@ -4,6 +4,7 @@ using OIAnalyticsAPI.Configs;
 using OIAnalyticsAPI.Models;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace OIAnalyticsAPI.IService
 {
@@ -13,10 +14,10 @@ namespace OIAnalyticsAPI.IService
         Dataset GetDataset(PowerBIClient pbiClient, Guid WorkspaceId, string DatasetName);
         PowerBIClient GetPowerBiClient();
         IList<Tenant> GetTenants();
-        Tenant OnboardNewTenant(string name);
+        Task<Tenant> OnboardNewTenant(string name);
         void PublishPBIX(PowerBIClient pbiClient, Guid WorkspaceId, string PbixFilePath, string ImportName);
-        Tenant DeleteWorkspace(string CCC_WorkspaceId);
-        Tenant GetTenant(string CCC_WorkspaceId);
+        Task<Tenant> DeleteWorkspace(string CCC_WorkspaceId);
+        Task<Tenant> GetTenant(string CCC_WorkspaceId);
     }
 
 }

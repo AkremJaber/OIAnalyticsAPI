@@ -22,7 +22,7 @@ namespace OIAnalyticsAPI.Services
                    .OrderBy(tenant => tenant.UID_CCCTenantsHasPersons)
                    .ToList();
         }
-        public TenantsHasPersons AssignTenantToPerson(string UID_Person, string UID_Tenant)
+        public async Task<TenantsHasPersons> AssignTenantToPerson(string UID_Person, string UID_Tenant)
         {
             var ccc = System.Guid.NewGuid().ToString();
             var xobj = "<Key><T>CCCTenantsHasPersons</T><P>" + ccc + "</P></Key>";

@@ -32,7 +32,7 @@ namespace OIAnalyticsAPI.Services
             var tokenCredentials = new TokenCredentials(GetAccessToken(), "Bearer");
             return new PowerBIClient(new Uri(urlPowerBiServiceApiRoot), tokenCredentials);
         }
-        public TenantDetails GetTenantDetails(string CCC_WorkspaceId)
+        public async Task<TenantDetails> GetTenantDetails(string CCC_WorkspaceId)
         {
             PowerBIClient pbiClient = this.GetPowerBiClient();
             Guid WSID = new Guid(CCC_WorkspaceId);
