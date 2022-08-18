@@ -32,7 +32,7 @@ namespace OIAnalyticsAPI.Services
             thp.CCC_UIDTenant = UID_Tenant;
             thp.XObjectKey = xobj;
             dbContext.CCCTenantsHasPersons.Add(thp);
-            dbContext.SaveChanges();
+            dbContext.SaveChangesAsync();
             return thp;
         }
     }

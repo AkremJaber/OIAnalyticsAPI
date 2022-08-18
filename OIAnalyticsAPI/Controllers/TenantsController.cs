@@ -27,9 +27,9 @@ namespace OIAnalyticsAPI.Controllers
             return tenants;
         }
         [HttpPost]
-        public async Task<ActionResult<Tenant>> PostTenant(string name)
+        public async Task<ActionResult<Tenant>> PostTenant(TenantRequest tenantReq)
         {
-            Tenant tenant = await tenantsService.OnboardNewTenant(name);
+            Tenant tenant = await tenantsService.OnboardNewTenant(tenantReq.CCC_Name);
 
             return tenant;
         }
@@ -48,10 +48,26 @@ namespace OIAnalyticsAPI.Controllers
             }
             return tenant;
         }
-        [HttpGet("{CCC_WorkspaceId}")]
-        public async Task<ActionResult<Tenant>> GetTenant(string CCC_WorkspaceId)
+        //[HttpGet("{CCC_WorkspaceId}")]
+        //public async Task<ActionResult<Tenant>> GetTenant(string CCC_WorkspaceId)
+        //{
+        //    if (await tenantsService.GetTenant(CCC_WorkspaceId) == null)
+        //    {
+        //        int err = 101;
+        //        return NotFound(new Error
+        //        {
+        //            StatusCode = err,
+        //            Message = ErrorDictionary.ErrorCodes[err],
+        //        });
+        //    }
+        //    Tenant tenant = await tenantsService.GetTenant(CCC_WorkspaceId);
+        //    return tenant;
+        //    }
+
+        [HttpGet("{UID_CCCTenants}")]
+        public async Task<ActionResult<Tenant>> GetTenantByUID(string UID_CCCTenants)
         {
-            if (await tenantsService.GetTenant(CCC_WorkspaceId) == null)
+            if (await tenantsService.GetTenantByUID(UID_CCCTenants) == null)
             {
                 int err = 101;
                 return NotFound(new Error
@@ -60,10 +76,10 @@ namespace OIAnalyticsAPI.Controllers
                     Message = ErrorDictionary.ErrorCodes[err],
                 });
             }
-            Tenant tenant = await tenantsService.GetTenant(CCC_WorkspaceId);
+            Tenant tenant = await tenantsService.GetTenantByUID(UID_CCCTenants);
             return tenant;
-            }
-          
-        
+        }
+
+
     }
 }

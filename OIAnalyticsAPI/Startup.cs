@@ -42,6 +42,7 @@ namespace OIAnalyticsAPI
             services.AddScoped<IEmbeddedDashboardService, EmbeddedDashboardService>();
             services.AddScoped<IEmbeddedDataSetService, EmbeddedDataSetService>();
             services.AddScoped<ITenantDetailsService, TenantDetailsService>();
+            services.AddCors();
             //DBCONTEXT CONFIG
             string connectString = Configuration["ConnectionStrings:ConnectString"];
             services.AddDbContext <OIAnalyticsDBconfig>(opt => opt.UseSqlServer(connectString));
@@ -55,6 +56,10 @@ namespace OIAnalyticsAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
+            app.UseCors(options =>
+            options.WithOrigins("http://localhost:4200")
+            .AllowAnyMethod()
+            .AllowAnyHeader());
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

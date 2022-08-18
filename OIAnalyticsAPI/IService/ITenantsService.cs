@@ -18,6 +18,7 @@ namespace OIAnalyticsAPI.IService
         void PublishPBIX(PowerBIClient pbiClient, Guid WorkspaceId, string PbixFilePath, string ImportName);
         Task<Tenant> DeleteWorkspace(string CCC_WorkspaceId);
         Task<Tenant> GetTenant(string CCC_WorkspaceId);
+        Task<Tenant> GetTenantByUID(string UID_CCCTenants);
     }
 
 }

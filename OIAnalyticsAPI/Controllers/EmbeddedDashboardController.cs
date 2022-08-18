@@ -23,19 +23,19 @@ namespace OIAnalyticsAPI.Controllers
             this.ts = ts;
             
         }
-        [HttpGet("{CCC_WorkspaceId}/{DashboardId}")]
+        [HttpGet]
 
-        public async Task<ActionResult<EmbeddedDashboardViewModel>> GetDashboard(string CCC_WorkspaceId, string DashboardId)
+        public async Task<ActionResult<EmbeddedDashboardViewModel>> GetDashboard(GetDashboardRequest GDR)
         {
             try
             {
-                var dash = await embeddedDash.GetDashboard(CCC_WorkspaceId, DashboardId);
+                var dash = await embeddedDash.GetDashboard(GDR.CCC_WorkspaceId, GDR.DashboardId);
                 return dash;
             }
             catch 
             {
 
-                if (await ts.GetTenant(CCC_WorkspaceId) == null)
+                if (await ts.GetTenant(GDR.CCC_WorkspaceId) == null)
                 {
                     int err = 101;
                     return NotFound(new Error
@@ -55,11 +55,11 @@ namespace OIAnalyticsAPI.Controllers
                 }
             }
         }
-        [HttpPost("{CCC_WorkspaceId}/{name}")]
+        [HttpPost]
 
-        public async Task<ActionResult<EmbeddedDashboardViewModel>> PostDashboard(string CCC_WorkspaceId, string name)
+        public async Task<ActionResult<EmbeddedDashboardViewModel>> PostDashboard(EmbeddedDashboardRequest EDR)
         {
-            var dash = await embeddedDash.PostDashboardInGrp(CCC_WorkspaceId, name);
+            var dash = await embeddedDash.PostDashboardInGrp(EDR.CCC_WorkspaceId, EDR.Name);
             return dash;
         }
     }

@@ -147,6 +147,11 @@ namespace OIAnalyticsAPI.Services
             var tenant = await dbContext.CCCTenants.Where(tenant => tenant.CCC_WorkspaceId == CCC_WorkspaceId).FirstOrDefaultAsync();
             return tenant;
         }
+        public async Task<Tenant> GetTenantByUID(string UID_CCCTenants)
+        {
+            var tenant = await dbContext.CCCTenants.Where(tenant => tenant.UID_CCCTenants == UID_CCCTenants).FirstOrDefaultAsync();
+            return tenant;
+        }
     }
 
 }

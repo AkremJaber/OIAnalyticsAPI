@@ -30,11 +30,12 @@ namespace OIAnalyticsAPI.Controllers
             var tenantshaspersons = tenantshaspersonService.GetTenantsHasPersons();
             return tenantshaspersons;
         }
-        [HttpPost("{UID_Person}/{UID_Tenant}")]
+        [HttpPost]
         
-        public async Task<ActionResult<TenantsHasPersons>> PostTenantsHasPersons(string UID_Person, string UID_Tenant)
-        {   
-                if (await ts.GetTenant(UID_Tenant) == null)
+        public async Task<ActionResult<TenantsHasPersons>> PostTenantsHasPersons(THPRequest thprequest)
+        {
+            //var test = new JavaScriptSerializer().Deserialize<THPRequest>(json);
+                if (await ts.GetTenantByUID(thprequest.UID_Tenant) == null)
                 {
                     int err = 101;
                     return NotFound(new Error
@@ -43,7 +44,7 @@ namespace OIAnalyticsAPI.Controllers
                         Message = ErrorDictionary.ErrorCodes[err],
                     });
                 }
-                else if (await ps.GetPerson(UID_Person)== null)
+                else if (await ps.GetPerson(thprequest.UID_Person) == null)
                 {
                     int err = 105;
                     return NotFound(new Error
@@ -52,7 +53,7 @@ namespace OIAnalyticsAPI.Controllers
                         Message = ErrorDictionary.ErrorCodes[err],
                     });
                 }
-            TenantsHasPersons thp = await tenantshaspersonService.AssignTenantToPerson(UID_Person, UID_Tenant);
+            TenantsHasPersons thp = await tenantshaspersonService.AssignTenantToPerson(thprequest.UID_Person, thprequest.UID_Tenant);
             return thp;
 
 
