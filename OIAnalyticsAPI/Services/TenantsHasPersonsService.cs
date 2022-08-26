@@ -29,10 +29,10 @@ namespace OIAnalyticsAPI.Services
 
         public async Task<TenantsHasPersons> AssignTenantToPerson(string UID_Person, string UID_Tenant)
         {
-            var ccc = System.Guid.NewGuid().ToString();
-            var xobj = "<Key><T>CCCTenantsHasPersons</T><P>" + ccc + "</P></Key>";
+            var cccTHP = System.Guid.NewGuid().ToString();
+            var xobj = "<Key><T>CCCTenantsHasPersons</T><P>" + cccTHP + "</P></Key>";
             TenantsHasPersons thp = new TenantsHasPersons();
-            thp.UID_CCCTenantsHasPersons = ccc;
+            thp.UID_CCCTenantsHasPersons = cccTHP;
             thp.CCC_UIDPerson = UID_Person;
             thp.CCC_UIDTenant = UID_Tenant;
             thp.XObjectKey = xobj;
@@ -47,12 +47,12 @@ namespace OIAnalyticsAPI.Services
             return thp;
         }
 
-        public async Task<TenantsHasPersons> DeleteTenantsHasPersons(string UID_CCCTenantsHasPersons)
+        public async Task<string> DeleteTenantsHasPersons(string UID_CCCTenantsHasPersons)
         {
            TenantsHasPersons tenanthaspersons = await GetTHP(UID_CCCTenantsHasPersons);
            dbContext.CCCTenantsHasPersons.Remove(tenanthaspersons);
            await dbContext.SaveChangesAsync();
-           return tenanthaspersons;
+           return "Assignment deleted succesfully";
         }
     }
 }

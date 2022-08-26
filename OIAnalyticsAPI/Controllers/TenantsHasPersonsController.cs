@@ -59,9 +59,9 @@ namespace OIAnalyticsAPI.Controllers
         }
 
         [HttpDelete ("{UID_CCCTenantsHasPersons}")]
-        public async Task<ActionResult<TenantsHasPersons>> DeleteTenantsHasPersons(String UID_CCCTenantsHasPersons)
+        public async Task<ActionResult<string>> DeleteTenantsHasPersons(String UID_CCCTenantsHasPersons)
         {
-            TenantsHasPersons tenantshaspersons = await tenantshaspersonService.DeleteTenantsHasPersons(UID_CCCTenantsHasPersons);
+            var tenantshaspersons = await tenantshaspersonService.DeleteTenantsHasPersons(UID_CCCTenantsHasPersons);
             if (tenantshaspersons == null)
             {
                 int err = 101;
@@ -71,7 +71,7 @@ namespace OIAnalyticsAPI.Controllers
                     Message = ErrorDictionary.ErrorCodes[err],
                 });
             }
-            return tenantshaspersons;
+            return "Assignment deleted succesfully";
         }
 
         [HttpGet("{uiD_CCCTenantsHasPersons}")]

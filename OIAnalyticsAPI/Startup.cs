@@ -38,6 +38,7 @@ namespace OIAnalyticsAPI
             services.AddScoped<ITenantsService,TenantsService>();
             services.AddScoped<IAssignPersonTenant, AssignPersonTenant>();
             services.AddScoped<IPersonService, PersonService>();
+            services.AddScoped<IPowerBIService, PowerBIService>();
             services.AddScoped<ITenantsHasPersonsService, TenantsHasPersonsService>();
             services.AddScoped<IEmbeddedReportService, EmbeddedReportService>();
             services.AddScoped<IEmbeddedDashboardService, EmbeddedDashboardService>();

@@ -9,8 +9,6 @@ namespace OIAnalyticsAPI.IService
 {
     public interface IEmbeddedDataSetService
     {
-        string GetAccessToken();
-        PowerBIClient GetPowerBiClient();
         Task<EmbeddedDataSetViewModel> GetDataSet(string CCC_WorkspaceId, string DataSetId);
     }
 }

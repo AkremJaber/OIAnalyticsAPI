@@ -37,9 +37,9 @@ namespace OIAnalyticsAPI.Controllers
         }
 
         [HttpDelete("{CCC_WorkspaceId}")]
-        public async Task<ActionResult<Tenant>> DeleteTenant (string CCC_WorkspaceId)
+        public async Task<ActionResult<string>> DeleteTenant (string CCC_WorkspaceId)
         {
-            Tenant tenant = await tenantsService.DeleteWorkspace(CCC_WorkspaceId);
+            var tenant = await tenantsService.DeleteWorkspace(CCC_WorkspaceId);
             if (tenant == null)
             {
                 int err = 101;
@@ -49,7 +49,7 @@ namespace OIAnalyticsAPI.Controllers
                     Message = ErrorDictionary.ErrorCodes[err],
                 });
             }
-            return tenant;
+            return "Tenant deleted succesfully";
         }
 
         [HttpGet("{UID_CCCTenants}")]

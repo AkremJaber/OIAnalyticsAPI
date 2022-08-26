@@ -14,46 +14,28 @@ namespace OIAnalyticsAPI.Services
 {
     public class EmbeddedDataSetService : IEmbeddedDataSetService
     {
-        private readonly IConfiguration configuration;
-        private ITokenAcquisition tokenAcquisition { get; }
-        private string urlPowerBiServiceApiRoot { get; }
-
-        public EmbeddedDataSetService(ITokenAcquisition tokenAcquisition, IConfiguration configuration)
+        private readonly IPowerBIService pbi;
+       
+        public EmbeddedDataSetService(IPowerBIService pbi)
         {
-            this.configuration = configuration;
-            this.tokenAcquisition = tokenAcquisition;
-            this.urlPowerBiServiceApiRoot = configuration["PowerBi:ServiceRootUrl"];
+            this.pbi = pbi;
         }
-
-        public const string powerbiApiDefaultScope = "https://analysis.windows.net/powerbi/api/.default";
-
-        public string GetAccessToken()
-        {
-            return this.tokenAcquisition.GetAccessTokenForAppAsync(powerbiApiDefaultScope).Result;
-        }
-
-        public PowerBIClient GetPowerBiClient()
-        {
-            var tokenCredentials = new TokenCredentials(GetAccessToken(), "Bearer");
-            return new PowerBIClient(new Uri(urlPowerBiServiceApiRoot), tokenCredentials);
-        }
-
         public async Task<EmbeddedDataSetViewModel> GetDataSet(string CCC_WorkspaceId, string DataSetId)
         {
-            PowerBIClient pbiClient = GetPowerBiClient();
+            PowerBIClient pbiClient = pbi.GetPowerBiClient();
             Guid WorkspaceId = new Guid(CCC_WorkspaceId);
             var dataset = await pbiClient.Datasets.GetDatasetInGroupAsync(WorkspaceId, DataSetId);
 
             var tokenRequest = new GenerateTokenRequest(TokenAccessLevel.View);
             var embedTokenResponse = await pbiClient.Datasets.GenerateTokenAsync(WorkspaceId, DataSetId, tokenRequest);
             var embedToken = embedTokenResponse.Token;
-            var t = new EmbeddedDataSetViewModel
+            var datasetView = new EmbeddedDataSetViewModel
             {
                 id = dataset.Id,
                 name=dataset.Name,
                 isRefreshable=dataset.IsRefreshable.ToString(),
             };
-            return t;
+            return datasetView;
         }
     }
 }

@@ -13,35 +13,17 @@ namespace OIAnalyticsAPI.Services
 {
     public class TenantDetailsService : ITenantDetailsService
     {
-        private readonly IConfiguration configuration;
-        private string urlPowerBiServiceApiRoot { get; }
-        private ITokenAcquisition tokenAcquisition { get; }
-
-        public TenantDetailsService(ITokenAcquisition tokenAcquisition, IConfiguration configuration)
+        private readonly IPowerBIService pbi;
+        public TenantDetailsService(IPowerBIService pbi)
         {
-            this.configuration = configuration;
-            this.tokenAcquisition = tokenAcquisition;
-            this.urlPowerBiServiceApiRoot = configuration["PowerBi:ServiceRootUrl"];
-        }
-
-        public const string powerbiApiDefaultScope = "https://analysis.windows.net/powerbi/api/.default";
-
-        public string GetAccessToken()
-        {
-            return this.tokenAcquisition.GetAccessTokenForAppAsync(powerbiApiDefaultScope).Result;
-        }
-
-        public PowerBIClient GetPowerBiClient()
-        {
-            var tokenCredentials = new TokenCredentials(GetAccessToken(), "Bearer");
-            return new PowerBIClient(new Uri(urlPowerBiServiceApiRoot), tokenCredentials);
+            this.pbi = pbi;  
         }
 
         public async Task<TenantDetails> GetTenantDetails(string CCC_WorkspaceId)
         {
-            PowerBIClient pbiClient = this.GetPowerBiClient();
+            PowerBIClient pbiClient = pbi.GetPowerBiClient();
             Guid WSID = new Guid(CCC_WorkspaceId);
-            return new TenantDetails
+            return  new TenantDetails
             {
                 Datasets = pbiClient.Datasets.GetDatasetsInGroup(WSID).Value,
                 Reports = pbiClient.Reports.GetReportsInGroup(WSID).Value,

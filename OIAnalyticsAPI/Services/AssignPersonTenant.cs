@@ -14,33 +14,16 @@ namespace OIAnalyticsAPI.Services
 {
     public class AssignPersonTenant : IAssignPersonTenant
     {
-        private readonly IConfiguration Configuration;
-        private ITokenAcquisition TokenAcquisition { get; }
-        private string urlPowerBiServiceApiRoot { get; }
+        private readonly IPowerBIService pbi;
 
-        public AssignPersonTenant(ITokenAcquisition TokenAcquisition, IConfiguration configuration)
+        public AssignPersonTenant(IPowerBIService pbi)
         {
-            this.Configuration = configuration;
-            this.TokenAcquisition = TokenAcquisition;
-            this.urlPowerBiServiceApiRoot = configuration["PowerBi:ServiceRootUrl"];
-        }
-
-        public const string powerbiApiDefaultScope = "https://analysis.windows.net/powerbi/api/.default";
-
-        public string GetAccessToken()
-        {
-            return this.TokenAcquisition.GetAccessTokenForAppAsync(powerbiApiDefaultScope).Result;
-        }
-
-        public PowerBIClient GetPowerBiClient()
-        {
-            var tokenCredentials = new TokenCredentials(GetAccessToken(), "Bearer");
-            return new PowerBIClient(new Uri(urlPowerBiServiceApiRoot), tokenCredentials);
+            this.pbi = pbi;
         }
 
         public async Task AddOneAdminUser(string CCC_WorkspaceId,string email)
         {
-            PowerBIClient pbiClient = this.GetPowerBiClient();
+            PowerBIClient pbiClient = pbi.GetPowerBiClient();
             Guid workspaceIdGuid = new Guid(CCC_WorkspaceId);
             if (!string.IsNullOrEmpty(email))
             {
@@ -54,7 +37,7 @@ namespace OIAnalyticsAPI.Services
 
         public async Task AddDictAdminUser(string CCC_WorkspaceId,PersonDictionary personDictionary)
         {
-            PowerBIClient pbiClient = this.GetPowerBiClient();
+            PowerBIClient pbiClient = pbi.GetPowerBiClient();
             Guid workspaceIdGuid = new Guid(CCC_WorkspaceId);
 
             foreach (var person in PersonDictionary.Persons)
@@ -69,7 +52,7 @@ namespace OIAnalyticsAPI.Services
 
         public async Task UpdateOneAdminUser(string CCC_WorkspaceId,string email)
         {
-            PowerBIClient pbiClient = this.GetPowerBiClient();
+            PowerBIClient pbiClient = pbi.GetPowerBiClient();
             Guid workspaceIdGuid = new Guid(CCC_WorkspaceId);
             if (!string.IsNullOrEmpty(email))
             {
@@ -84,7 +67,7 @@ namespace OIAnalyticsAPI.Services
 
         public async Task UpdateDictAdminUser(string CCC_WorkspaceId, PersonDictionary personDictionary)
         {
-            PowerBIClient pbiClient = this.GetPowerBiClient();
+            PowerBIClient pbiClient = pbi.GetPowerBiClient();
             Guid workspaceIdGuid = new Guid(CCC_WorkspaceId);
             foreach (var person in PersonDictionary.Persons)
                 {
@@ -92,6 +75,7 @@ namespace OIAnalyticsAPI.Services
                 {
                     EmailAddress = person.Key,
                     GroupUserAccessRight = person.Value,
+                    PrincipalType = "None"
                 });
             }
         }
