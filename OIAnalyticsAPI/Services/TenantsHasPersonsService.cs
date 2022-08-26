@@ -18,6 +18,7 @@ namespace OIAnalyticsAPI.Services
         {
             this.dbContext = dbContext;
         }
+
         public IList<TenantsHasPersons> GetTenantsHasPersons()
         {
             return dbContext.CCCTenantsHasPersons
@@ -25,6 +26,7 @@ namespace OIAnalyticsAPI.Services
                    .OrderBy(tenant => tenant.UID_CCCTenantsHasPersons)
                    .ToList();
         }
+
         public async Task<TenantsHasPersons> AssignTenantToPerson(string UID_Person, string UID_Tenant)
         {
             var ccc = System.Guid.NewGuid().ToString();
@@ -35,9 +37,10 @@ namespace OIAnalyticsAPI.Services
             thp.CCC_UIDTenant = UID_Tenant;
             thp.XObjectKey = xobj;
             dbContext.CCCTenantsHasPersons.Add(thp);
-            dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
             return thp;
         }
+
         public async Task<TenantsHasPersons> GetTHP(string UID_CCCTenantsHasPersons)
         {
             var thp = await dbContext.CCCTenantsHasPersons.Where(thp => thp.UID_CCCTenantsHasPersons == UID_CCCTenantsHasPersons).FirstOrDefaultAsync();
@@ -46,11 +49,10 @@ namespace OIAnalyticsAPI.Services
 
         public async Task<TenantsHasPersons> DeleteTenantsHasPersons(string UID_CCCTenantsHasPersons)
         {
-
-            TenantsHasPersons tenanthaspersons = await GetTHP(UID_CCCTenantsHasPersons);
-            dbContext.CCCTenantsHasPersons.Remove(tenanthaspersons);
-            dbContext.SaveChangesAsync();
-            return tenanthaspersons;
+           TenantsHasPersons tenanthaspersons = await GetTHP(UID_CCCTenantsHasPersons);
+           dbContext.CCCTenantsHasPersons.Remove(tenanthaspersons);
+           await dbContext.SaveChangesAsync();
+           return tenanthaspersons;
         }
     }
 }

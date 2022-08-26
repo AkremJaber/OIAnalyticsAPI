@@ -22,8 +22,6 @@ namespace OIAnalyticsAPI.IService
         Task<Tenant> CreateNewTenant(string name, PersonDictionary personDictionary);
         Task UpdateOneUserTenant(string CCC_WorkspaceId, string email);
         Task UpdateDictUserTenant(string CCC_WorkspaceId, PersonDictionary personDictionary);
-        //Task<string> AddAdminUser(string CCC_WorkspaceId, string email);
-        //Task<string> CreateTenantAdmin(string name, string UID_Person);
     }
 
 }

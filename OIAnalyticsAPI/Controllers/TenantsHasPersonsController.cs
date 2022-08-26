@@ -24,14 +24,15 @@ namespace OIAnalyticsAPI.Controllers
             this.ts = ts;
             this.ps = ps;
         }
+
         [HttpGet]
         public IEnumerable<TenantsHasPersons> GetTenantsHasPersons()
         {
             var tenantshaspersons = tenantshaspersonService.GetTenantsHasPersons();
             return tenantshaspersons;
         }
-        [HttpPost]
-        
+
+        [HttpPost]        
         public async Task<ActionResult<TenantsHasPersons>> PostTenantsHasPersons(THPRequest thprequest)
         {
             //var test = new JavaScriptSerializer().Deserialize<THPRequest>(json);
@@ -55,9 +56,8 @@ namespace OIAnalyticsAPI.Controllers
                 }
             TenantsHasPersons thp = await tenantshaspersonService.AssignTenantToPerson(thprequest.UID_Person, thprequest.UID_Tenant);
             return thp;
-
-
         }
+
         [HttpDelete ("{UID_CCCTenantsHasPersons}")]
         public async Task<ActionResult<TenantsHasPersons>> DeleteTenantsHasPersons(String UID_CCCTenantsHasPersons)
         {
@@ -73,6 +73,7 @@ namespace OIAnalyticsAPI.Controllers
             }
             return tenantshaspersons;
         }
+
         [HttpGet("{uiD_CCCTenantsHasPersons}")]
         public async Task<ActionResult<TenantsHasPersons>> GetTHPByUID(string uiD_CCCTenantsHasPersons)
         {

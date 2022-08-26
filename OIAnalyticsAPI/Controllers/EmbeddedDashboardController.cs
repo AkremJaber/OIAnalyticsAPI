@@ -21,10 +21,9 @@ namespace OIAnalyticsAPI.Controllers
         {
             this.embeddedDash = embeddedDash;
             this.ts = ts;
-            
         }
-        [HttpGet]
 
+        [HttpGet]
         public async Task<ActionResult<EmbeddedDashboardViewModel>> GetDashboard(string CCC_WorkspaceId, string DashboardId)
         {
             try

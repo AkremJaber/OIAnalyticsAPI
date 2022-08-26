@@ -22,12 +22,14 @@ namespace OIAnalyticsAPI.Controllers
         {
             this.personService = personService;
         }
+
         [HttpGet]
         public IEnumerable<Person> GetPersons()
         {
             var persons = personService.GetPersons();
             return persons;
         }
+
         [HttpGet("{UID_Person}")]
         public async Task<ActionResult<Person>> GetPerson(string UID_Person)
         {  
@@ -42,7 +44,6 @@ namespace OIAnalyticsAPI.Controllers
                 });
             }
             return person; 
-        }
-        
+        }        
     }
 }

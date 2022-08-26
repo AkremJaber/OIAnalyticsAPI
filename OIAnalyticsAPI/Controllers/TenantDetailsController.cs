@@ -21,6 +21,7 @@ namespace OIAnalyticsAPI.Controllers
             this.tenantDetails = tenantDetails;
             this.ts = ts;
         }
+
         [HttpGet("{CCC_WorkspaceId}")]
         public async Task<ActionResult<TenantDetails>> GetDashboard(string CCC_WorkspaceId)
         {
@@ -35,8 +36,6 @@ namespace OIAnalyticsAPI.Controllers
             }
             var tenant = await tenantDetails.GetTenantDetails(CCC_WorkspaceId);
                 return tenant;
-           
-
         }
     }
 }

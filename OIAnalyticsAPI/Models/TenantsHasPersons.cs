@@ -13,8 +13,5 @@ namespace OIAnalyticsAPI.Models
         public string CCC_UIDTenant { get; set; }
         public string CCC_UIDPerson { get; set; }
         public string XObjectKey { get; set; }
-        //public string CCC_CanEdit { get; set; }
-        //public string CCC_CanCreate { get; set; }
     }
-
 }

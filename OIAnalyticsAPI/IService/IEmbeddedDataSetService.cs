@@ -12,6 +12,5 @@ namespace OIAnalyticsAPI.IService
         string GetAccessToken();
         PowerBIClient GetPowerBiClient();
         Task<EmbeddedDataSetViewModel> GetDataSet(string CCC_WorkspaceId, string DataSetId);
-
     }
 }

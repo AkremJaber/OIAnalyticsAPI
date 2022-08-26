@@ -17,23 +17,27 @@ namespace OIAnalyticsAPI.Services
         private readonly IConfiguration configuration;
         private ITokenAcquisition tokenAcquisition { get; }
         private string urlPowerBiServiceApiRoot { get; }
+
         public EmbeddedDashboardService(ITokenAcquisition tokenAcquisition, IConfiguration configuration)
         {
             this.configuration = configuration;
             this.tokenAcquisition = tokenAcquisition;
             this.urlPowerBiServiceApiRoot = configuration["PowerBi:ServiceRootUrl"];
         }
+
         public const string powerbiApiDefaultScope = "https://analysis.windows.net/powerbi/api/.default";
 
         public string GetAccessToken()
         {
             return this.tokenAcquisition.GetAccessTokenForAppAsync(powerbiApiDefaultScope).Result;
         }
+
         public PowerBIClient GetPowerBiClient()
         {
             var tokenCredentials = new TokenCredentials(GetAccessToken(), "Bearer");
             return new PowerBIClient(new Uri(urlPowerBiServiceApiRoot), tokenCredentials);
         }
+
         public async Task<EmbeddedDashboardViewModel> GetDashboard(string CCC_WorkspaceId, string DashboardId)
         {
             PowerBIClient pbiClient = GetPowerBiClient();
@@ -49,10 +53,10 @@ namespace OIAnalyticsAPI.Services
                 DashboardId = dashboard.Id.ToString(),
                 EmbedUrl = dashboard.EmbedUrl,
                 Token = embedToken,
-
             };
             return t;
         }
+
         public async Task<EmbeddedDashboardViewModel> PostDashboardInGrp(string CCC_WorkspaceId, string name)
         {
             PowerBIClient pbiClient = GetPowerBiClient();
@@ -63,12 +67,9 @@ namespace OIAnalyticsAPI.Services
             {
                 Name=name,
                 DashboardId = dash.Id.ToString(),
-                EmbedUrl = dash.EmbedUrl,
-                
+                EmbedUrl = dash.EmbedUrl,                
             };
             return t;
-
         }
-
     }
 }

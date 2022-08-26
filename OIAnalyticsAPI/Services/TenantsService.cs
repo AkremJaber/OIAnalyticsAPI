@@ -35,7 +35,9 @@ namespace OIAnalyticsAPI.Services
             this.TokenAcquisition = TokenAcquisition;
             this.dbContext = dbContext;           
         }
+
         public const string powerbiApiDefaultScope = "https://analysis.windows.net/powerbi/api/.default";
+
         public string GetAccessToken()
         {
             return this.TokenAcquisition.GetAccessTokenForAppAsync(powerbiApiDefaultScope).Result;
@@ -95,6 +97,7 @@ namespace OIAnalyticsAPI.Services
             dbContext.SaveChanges();
             return tenant;
         }
+
         public void PublishPBIX(PowerBIClient pbiClient, Guid WorkspaceId, string PbixFilePath, string ImportName)
         {
 
@@ -106,8 +109,8 @@ namespace OIAnalyticsAPI.Services
             {
                 import = pbiClient.Imports.GetImportInGroup(WorkspaceId, import.Id);
             }
-
         }
+
         public Dataset GetDataset(PowerBIClient pbiClient, Guid WorkspaceId, string DatasetName)
         {
             var datasets = pbiClient.Datasets.GetDatasetsInGroup(WorkspaceId).Value;
@@ -120,6 +123,7 @@ namespace OIAnalyticsAPI.Services
             }
             return null;
         }
+
         public async Task<Tenant> DeleteWorkspace(string CCC_WorkspaceId)
         {
 
@@ -131,6 +135,7 @@ namespace OIAnalyticsAPI.Services
             dbContext.SaveChanges();
             return tenant;
         }
+
         public async Task<Tenant> GetTenant(string CCC_WorkspaceId)
         {
             PowerBIClient pbiClient = this.GetPowerBiClient();
@@ -138,11 +143,13 @@ namespace OIAnalyticsAPI.Services
             var tenant = await dbContext.CCCTenants.Where(tenant => tenant.CCC_WorkspaceId == CCC_WorkspaceId).FirstOrDefaultAsync();
             return tenant;
         }
+
         public async Task<Tenant> GetTenantByUID(string UID_CCCTenants)
         {
             var tenant = await dbContext.CCCTenants.Where(tenant => tenant.UID_CCCTenants == UID_CCCTenants).FirstOrDefaultAsync();
             return tenant;
         }
+
         public async Task<Tenant> CreateNewTenant(string name,PersonDictionary personDictionary)
         {
             PowerBIClient pbiClient = this.GetPowerBiClient();
@@ -151,7 +158,6 @@ namespace OIAnalyticsAPI.Services
             GroupCreationRequest request = new GroupCreationRequest(name);
             // Group workspace = await pbiClient.Admin.;
             Group workspace = await pbiClient.Groups.CreateGroupAsync(request);
-
             tenant.CCC_Name = name;
             tenant.CCC_WorkspaceId = workspace.Id.ToString();
             tenant.CCC_WorkspaceUrl = "https://app.powerbi.com/groups/" + workspace.Id.ToString() + "/";
@@ -164,7 +170,6 @@ namespace OIAnalyticsAPI.Services
             tenant.UID_CCCTenants = ccc;
             tenant.XObjectKey = xobj;
             string adminUser = Configuration["DemoSettings:AdminUser"];
-
             // add user as new workspace admin  AddGroupUserAsync
             await assignPersonTenant.AddDictAdminUser(tenant.CCC_WorkspaceId, personDictionary);
 
@@ -175,22 +180,16 @@ namespace OIAnalyticsAPI.Services
             dbContext.CCCTenants.Add(tenant);
             dbContext.SaveChanges();
             return tenant;
-
         }
 
         public async Task UpdateOneUserTenant(string CCC_WorkspaceId, string email)
         {
-            await assignPersonTenant.UpdateOneAdminUser(CCC_WorkspaceId, email);
-            
+            await assignPersonTenant.UpdateOneAdminUser(CCC_WorkspaceId, email); 
         }
+
         public async Task UpdateDictUserTenant(string CCC_WorkspaceId, PersonDictionary personDictionary)
         {
             await assignPersonTenant.UpdateDictAdminUser(CCC_WorkspaceId, personDictionary);
-
         }
-
-
-
     }
-
 }

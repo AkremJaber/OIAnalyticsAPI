@@ -21,8 +21,8 @@ namespace OIAnalyticsAPI.Controllers
             this.embeddedReport = embeddedReport;
             this.ts = ts;
         }
-        [HttpGet("{CCC_WorkspaceId}/{ReportId}")]
-        
+
+        [HttpGet("{CCC_WorkspaceId}/{ReportId}")]        
         public async Task<ActionResult<EmbeddedReportViewModel>> GetReport (string CCC_WorkspaceId,string ReportId)
         {
             try
@@ -51,9 +51,6 @@ namespace OIAnalyticsAPI.Controllers
                     });
                 }
             }
-
-
         }
-
     }
 }

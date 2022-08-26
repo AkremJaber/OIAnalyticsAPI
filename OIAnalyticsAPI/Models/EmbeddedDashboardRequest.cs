@@ -8,8 +8,6 @@ namespace OIAnalyticsAPI.Models
     public class EmbeddedDashboardRequest
     {
         public string Name { get; set; }
-
-        public string CCC_WorkspaceId { get; set; }
-        
+        public string CCC_WorkspaceId { get; set; }        
     }
 }

@@ -12,6 +12,7 @@ namespace OIAnalyticsAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class EmbeddedDataSetController : ControllerBase
     {
         public readonly IEmbeddedDataSetService embeddedDS;
@@ -21,8 +22,8 @@ namespace OIAnalyticsAPI.Controllers
             this.embeddedDS = embeddedDS;
             this.ts = ts;
         }
-        [HttpGet("{CCC_WorkspaceId}/{DataSetId}")]
-        
+
+        [HttpGet("{CCC_WorkspaceId}/{DataSetId}")]        
         public async Task<ActionResult<EmbeddedDataSetViewModel>> GetDashboard(string CCC_WorkspaceId, string DataSetId)
         {
             var ds = await embeddedDS.GetDataSet(CCC_WorkspaceId, DataSetId);

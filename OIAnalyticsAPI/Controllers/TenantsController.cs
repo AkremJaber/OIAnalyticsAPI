@@ -68,9 +68,9 @@ namespace OIAnalyticsAPI.Controllers
             Tenant tenant = await tenantsService.GetTenantByUID(UID_CCCTenants);
             return tenant;
         }
+
         [Route("CreateTenantDict")]
         [HttpPost]
-
         public async Task<ActionResult<Tenant>> AssignListPersonAdmin(TenantRequest tenantReq)
         {
             Tenant tenant = await tenantsService.CreateNewTenant(tenantReq.CCC_Name, tenantReq.PersonDictionary);
@@ -92,6 +92,5 @@ namespace OIAnalyticsAPI.Controllers
             await tenantsService.UpdateDictUserTenant(tenantReq.CCC_WorkspaceId, tenantReq.PersonDictionary);
             return "successfully updated";
         }
-
     }
 }

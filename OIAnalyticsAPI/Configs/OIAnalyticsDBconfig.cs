@@ -10,12 +10,10 @@ namespace OIAnalyticsAPI.Configs
 {
     
     public class OIAnalyticsDBconfig : DbContext
-    {
-        
+    {        
         public OIAnalyticsDBconfig(DbContextOptions<OIAnalyticsDBconfig> options) : base(options) { }
         public DbSet<Tenant> CCCTenants { get; set; }
         public DbSet<Person> Person { get; set; }
         public DbSet<TenantsHasPersons> CCCTenantsHasPersons { get; set; }
-
     }
 }

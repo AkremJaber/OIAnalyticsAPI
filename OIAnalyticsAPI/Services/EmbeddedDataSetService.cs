@@ -17,28 +17,31 @@ namespace OIAnalyticsAPI.Services
         private readonly IConfiguration configuration;
         private ITokenAcquisition tokenAcquisition { get; }
         private string urlPowerBiServiceApiRoot { get; }
+
         public EmbeddedDataSetService(ITokenAcquisition tokenAcquisition, IConfiguration configuration)
         {
             this.configuration = configuration;
             this.tokenAcquisition = tokenAcquisition;
             this.urlPowerBiServiceApiRoot = configuration["PowerBi:ServiceRootUrl"];
         }
+
         public const string powerbiApiDefaultScope = "https://analysis.windows.net/powerbi/api/.default";
 
         public string GetAccessToken()
         {
             return this.tokenAcquisition.GetAccessTokenForAppAsync(powerbiApiDefaultScope).Result;
         }
+
         public PowerBIClient GetPowerBiClient()
         {
             var tokenCredentials = new TokenCredentials(GetAccessToken(), "Bearer");
             return new PowerBIClient(new Uri(urlPowerBiServiceApiRoot), tokenCredentials);
         }
+
         public async Task<EmbeddedDataSetViewModel> GetDataSet(string CCC_WorkspaceId, string DataSetId)
         {
             PowerBIClient pbiClient = GetPowerBiClient();
             Guid WorkspaceId = new Guid(CCC_WorkspaceId);
-            //Guid datasetId = new Guid(DataSetId);
             var dataset = await pbiClient.Datasets.GetDatasetInGroupAsync(WorkspaceId, DataSetId);
 
             var tokenRequest = new GenerateTokenRequest(TokenAccessLevel.View);
@@ -52,6 +55,5 @@ namespace OIAnalyticsAPI.Services
             };
             return t;
         }
-
     }
 }

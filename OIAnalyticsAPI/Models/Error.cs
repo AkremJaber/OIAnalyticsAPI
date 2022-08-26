@@ -11,11 +11,5 @@ namespace OIAnalyticsAPI.Models
         {
             return JsonConvert.SerializeObject(this);
         }
-        
-
-
     }
-
-
-
 }

@@ -15,15 +15,16 @@ namespace OIAnalyticsAPI.Services
     public class AssignPersonTenant : IAssignPersonTenant
     {
         private readonly IConfiguration Configuration;
-
         private ITokenAcquisition TokenAcquisition { get; }
         private string urlPowerBiServiceApiRoot { get; }
+
         public AssignPersonTenant(ITokenAcquisition TokenAcquisition, IConfiguration configuration)
         {
             this.Configuration = configuration;
             this.TokenAcquisition = TokenAcquisition;
             this.urlPowerBiServiceApiRoot = configuration["PowerBi:ServiceRootUrl"];
         }
+
         public const string powerbiApiDefaultScope = "https://analysis.windows.net/powerbi/api/.default";
 
         public string GetAccessToken()
@@ -48,8 +49,7 @@ namespace OIAnalyticsAPI.Services
                     EmailAddress = email,
                     GroupUserAccessRight = "Admin"
                 });
-            }
-            //var user = await pbiClient.Groups.GetGroupUsersAsync(workspaceIdGuid);
+            }           
         }
 
         public async Task AddDictAdminUser(string CCC_WorkspaceId,PersonDictionary personDictionary)
@@ -66,20 +66,20 @@ namespace OIAnalyticsAPI.Services
                 });
             }
         }
+
         public async Task UpdateOneAdminUser(string CCC_WorkspaceId,string email)
         {
             PowerBIClient pbiClient = this.GetPowerBiClient();
             Guid workspaceIdGuid = new Guid(CCC_WorkspaceId);
             if (!string.IsNullOrEmpty(email))
             {
-                await pbiClient.Groups.UpdateGroupUserAsync(workspaceIdGuid, new GroupUser
+                await pbiClient.Groups.AddGroupUserAsync(workspaceIdGuid, new GroupUser
                 {
                     EmailAddress = email,
                     GroupUserAccessRight= "Admin",
-
+                    PrincipalType="None"
                 });
             }
-            //var user = await pbiClient.Groups.GetGroupUsersAsync(workspaceIdGuid);
         }
 
         public async Task UpdateDictAdminUser(string CCC_WorkspaceId, PersonDictionary personDictionary)
@@ -94,7 +94,6 @@ namespace OIAnalyticsAPI.Services
                     GroupUserAccessRight = person.Value,
                 });
             }
-            //var user = await pbiClient.Groups.GetGroupUsersAsync(workspaceIdGuid);
         }
 
     }
