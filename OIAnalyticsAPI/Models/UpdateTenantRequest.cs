@@ -5,11 +5,10 @@ using System.Threading.Tasks;
 
 namespace OIAnalyticsAPI.Models
 {
-    public class TenantRequest
+    public class UpdateTenantRequest
     {
-        public string CCC_Name { get; set; }
-        public string UID_Person { get; set; }
         public PersonDictionary PersonDictionary { get; set; }
+        public string CCC_WorkspaceId { get; set; }
+        public string email { get; set; }
     }
-
 }

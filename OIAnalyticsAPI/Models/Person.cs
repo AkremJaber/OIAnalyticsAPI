@@ -13,5 +13,6 @@ namespace OIAnalyticsAPI.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string CentralAccount { get; set; }
+        public string DefaultEmailAddress { get; set; }
     }
 }

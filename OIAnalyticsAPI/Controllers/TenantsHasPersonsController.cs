@@ -58,5 +58,35 @@ namespace OIAnalyticsAPI.Controllers
 
 
         }
-   }
+        [HttpDelete ("{UID_CCCTenantsHasPersons}")]
+        public async Task<ActionResult<TenantsHasPersons>> DeleteTenantsHasPersons(String UID_CCCTenantsHasPersons)
+        {
+            TenantsHasPersons tenantshaspersons = await tenantshaspersonService.DeleteTenantsHasPersons(UID_CCCTenantsHasPersons);
+            if (tenantshaspersons == null)
+            {
+                int err = 101;
+                return NotFound(new Error
+                {
+                    StatusCode = err,
+                    Message = ErrorDictionary.ErrorCodes[err],
+                });
+            }
+            return tenantshaspersons;
+        }
+        [HttpGet("{uiD_CCCTenantsHasPersons}")]
+        public async Task<ActionResult<TenantsHasPersons>> GetTHPByUID(string uiD_CCCTenantsHasPersons)
+        {
+            if (await tenantshaspersonService.GetTHP(uiD_CCCTenantsHasPersons) == null)
+            {
+                int err = 101;
+                return NotFound(new Error
+                {
+                    StatusCode = err,
+                    Message = ErrorDictionary.ErrorCodes[err],
+                });
+            }
+            TenantsHasPersons tenant = await tenantshaspersonService.GetTHP(uiD_CCCTenantsHasPersons);
+            return tenant;
+        }
+    }
 }

@@ -5,11 +5,8 @@ using System.Threading.Tasks;
 
 namespace OIAnalyticsAPI.Models
 {
-    public class TenantRequest
+    public class PersonRequest
     {
-        public string CCC_Name { get; set; }
         public string UID_Person { get; set; }
-        public PersonDictionary PersonDictionary { get; set; }
     }
-
 }

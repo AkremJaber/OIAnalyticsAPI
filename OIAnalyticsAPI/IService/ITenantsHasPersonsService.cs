@@ -10,5 +10,10 @@ namespace OIAnalyticsAPI.IService
     {
         IList<TenantsHasPersons> GetTenantsHasPersons();
         Task<TenantsHasPersons> AssignTenantToPerson(string UID_Person, string UID_Tenant);
+        Task<TenantsHasPersons> GetTHP(string UID_CCCTenantsHasPersons);
+        Task<TenantsHasPersons> DeleteTenantsHasPersons(string UID_CCCTenantsHasPersons);
+
+
+
     }
 }

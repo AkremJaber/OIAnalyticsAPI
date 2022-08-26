@@ -25,17 +25,17 @@ namespace OIAnalyticsAPI.Controllers
         }
         [HttpGet]
 
-        public async Task<ActionResult<EmbeddedDashboardViewModel>> GetDashboard(GetDashboardRequest GDR)
+        public async Task<ActionResult<EmbeddedDashboardViewModel>> GetDashboard(string CCC_WorkspaceId, string DashboardId)
         {
             try
             {
-                var dash = await embeddedDash.GetDashboard(GDR.CCC_WorkspaceId, GDR.DashboardId);
+                var dash = await embeddedDash.GetDashboard(CCC_WorkspaceId, DashboardId);
                 return dash;
             }
             catch 
             {
 
-                if (await ts.GetTenant(GDR.CCC_WorkspaceId) == null)
+                if (await ts.GetTenant(CCC_WorkspaceId) == null)
                 {
                     int err = 101;
                     return NotFound(new Error

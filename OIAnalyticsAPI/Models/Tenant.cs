@@ -17,5 +17,6 @@ namespace OIAnalyticsAPI.Models
         public string CCC_DatabaseUserPassword { get; set; }
         public string UID_CCCTenants { get; set; }
         public string XObjectKey { get; set; }
+
     }
 }

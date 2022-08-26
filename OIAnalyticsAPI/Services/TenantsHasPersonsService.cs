@@ -1,4 +1,6 @@
-﻿using OIAnalyticsAPI.Configs;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.PowerBI.Api;
+using OIAnalyticsAPI.Configs;
 using OIAnalyticsAPI.IService;
 using OIAnalyticsAPI.Models;
 using System;
@@ -11,6 +13,7 @@ namespace OIAnalyticsAPI.Services
     public class TenantsHasPersonsService : ITenantsHasPersonsService
     {
         public OIAnalyticsDBconfig dbContext;
+
         public TenantsHasPersonsService(OIAnalyticsDBconfig dbContext)
         {
             this.dbContext = dbContext;
@@ -34,6 +37,20 @@ namespace OIAnalyticsAPI.Services
             dbContext.CCCTenantsHasPersons.Add(thp);
             dbContext.SaveChangesAsync();
             return thp;
+        }
+        public async Task<TenantsHasPersons> GetTHP(string UID_CCCTenantsHasPersons)
+        {
+            var thp = await dbContext.CCCTenantsHasPersons.Where(thp => thp.UID_CCCTenantsHasPersons == UID_CCCTenantsHasPersons).FirstOrDefaultAsync();
+            return thp;
+        }
+
+        public async Task<TenantsHasPersons> DeleteTenantsHasPersons(string UID_CCCTenantsHasPersons)
+        {
+
+            TenantsHasPersons tenanthaspersons = await GetTHP(UID_CCCTenantsHasPersons);
+            dbContext.CCCTenantsHasPersons.Remove(tenanthaspersons);
+            dbContext.SaveChangesAsync();
+            return tenanthaspersons;
         }
     }
 }

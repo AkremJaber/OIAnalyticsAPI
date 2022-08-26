@@ -36,6 +36,7 @@ namespace OIAnalyticsAPI
                     .EnableTokenAcquisitionToCallDownstreamApi()
                     .AddInMemoryTokenCaches();
             services.AddScoped<ITenantsService,TenantsService>();
+            services.AddScoped<IAssignPersonTenant, AssignPersonTenant>();
             services.AddScoped<IPersonService, PersonService>();
             services.AddScoped<ITenantsHasPersonsService, TenantsHasPersonsService>();
             services.AddScoped<IEmbeddedReportService, EmbeddedReportService>();

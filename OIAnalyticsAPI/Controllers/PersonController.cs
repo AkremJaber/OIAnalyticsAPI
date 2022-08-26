@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace OIAnalyticsAPI.Controllers
@@ -15,6 +16,8 @@ namespace OIAnalyticsAPI.Controllers
     public class PersonController : ControllerBase
     {
         public readonly IPersonService personService;
+        public readonly IAssignPersonTenant assignService;
+
         public PersonController(IPersonService personService)
         {
             this.personService = personService;
@@ -22,8 +25,6 @@ namespace OIAnalyticsAPI.Controllers
         [HttpGet]
         public IEnumerable<Person> GetPersons()
         {
-            
-
             var persons = personService.GetPersons();
             return persons;
         }
@@ -40,8 +41,8 @@ namespace OIAnalyticsAPI.Controllers
                     Message = ErrorDictionary.ErrorCodes[err],
                 });
             }
-            return person;
-            
+            return person; 
         }
+        
     }
 }

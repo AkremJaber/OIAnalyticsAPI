@@ -21,6 +21,7 @@ namespace OIAnalyticsAPI.Configs
                     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     context.Response.ContentType = "application/json";
                     var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+                    
                     if (contextFeature != null)
                         {
                             logger.LogError($"Somthing went wrong:{contextFeature.Error}");
