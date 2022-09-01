@@ -15,6 +15,8 @@ namespace OIAnalyticsAPI.Services
     public class EmbeddedDashboardService : IEmbeddedDashboardService
     {
         private readonly IPowerBIService pbi;
+        private PowerBIClient powerBIClient;
+
 
         public EmbeddedDashboardService(IPowerBIService pbi)
         {
@@ -22,13 +24,12 @@ namespace OIAnalyticsAPI.Services
         }
         public async Task<EmbeddedDashboardViewModel> GetDashboard(string CCC_WorkspaceId, string DashboardId)
         {
-            PowerBIClient pbiClient = pbi.GetPowerBiClient();
+            powerBIClient = pbi.GetPowerBiClient();
             Guid WorkspaceId = new Guid(CCC_WorkspaceId);
             Guid dashboardId = new Guid(DashboardId);
-            var dashboard = await pbiClient.Dashboards.GetDashboardInGroupAsync(WorkspaceId, dashboardId);
-
+            var dashboard = await powerBIClient.Dashboards.GetDashboardInGroupAsync(WorkspaceId, dashboardId);
             var tokenRequest = new GenerateTokenRequest(TokenAccessLevel.View);
-            var embedTokenResponse = await pbiClient.Dashboards.GenerateTokenAsync(WorkspaceId, dashboardId, tokenRequest);
+            var embedTokenResponse = await powerBIClient.Dashboards.GenerateTokenAsync(WorkspaceId, dashboardId, tokenRequest);
             var embedToken = embedTokenResponse.Token;
             var dashView = new EmbeddedDashboardViewModel
             {
@@ -41,10 +42,10 @@ namespace OIAnalyticsAPI.Services
 
         public async Task<EmbeddedDashboardViewModel> PostDashboardInGrp(string CCC_WorkspaceId, string name)
         {
-            PowerBIClient pbiClient = pbi.GetPowerBiClient();
+            powerBIClient = pbi.GetPowerBiClient();
             AddDashboardRequest request = new AddDashboardRequest(name);
             Guid WSID = new Guid(CCC_WorkspaceId);
-            Dashboard dash = await pbiClient.Dashboards.AddDashboardInGroupAsync(WSID, request);
+            Dashboard dash = await powerBIClient.Dashboards.AddDashboardInGroupAsync(WSID, request);
             var dashView = new EmbeddedDashboardViewModel
             {
                 Name=name,

@@ -15,14 +15,14 @@ namespace OIAnalyticsAPI.Controllers
     public class TenantsHasPersonsController : ControllerBase
     {
         public readonly ITenantsHasPersonsService tenantshaspersonService;
-        public readonly ITenantsService ts;
-        public readonly IPersonService ps;
+        public readonly ITenantsService tenantservice;
+        public readonly IPersonService personservice;
 
-        public TenantsHasPersonsController(ITenantsHasPersonsService tenantshaspersonService, ITenantsService ts, IPersonService ps)
+        public TenantsHasPersonsController(ITenantsHasPersonsService tenantshaspersonService, ITenantsService tenantservice, IPersonService personservice)
         {
             this.tenantshaspersonService = tenantshaspersonService;
-            this.ts = ts;
-            this.ps = ps;
+            this.tenantservice = tenantservice;
+            this.personservice = personservice;
         }
 
         [HttpGet]
@@ -36,7 +36,7 @@ namespace OIAnalyticsAPI.Controllers
         public async Task<ActionResult<TenantsHasPersons>> PostTenantsHasPersons(THPRequest thprequest)
         {
             //var test = new JavaScriptSerializer().Deserialize<THPRequest>(json);
-                if (await ts.GetTenantByUID(thprequest.UID_Tenant) == null)
+                if (await tenantservice.GetTenantByUID(thprequest.UID_Tenant) == null)
                 {
                     int err = 101;
                     return NotFound(new Error
@@ -45,7 +45,7 @@ namespace OIAnalyticsAPI.Controllers
                         Message = ErrorDictionary.ErrorCodes[err],
                     });
                 }
-                else if (await ps.GetPerson(thprequest.UID_Person) == null)
+                else if (await personservice.GetPerson(thprequest.UID_Person) == null)
                 {
                     int err = 105;
                     return NotFound(new Error

@@ -16,8 +16,7 @@ namespace OIAnalyticsAPI.Controllers
     public class PersonController : ControllerBase
     {
         public readonly IPersonService personService;
-        public readonly IAssignPersonTenant assignService;
-
+        
         public PersonController(IPersonService personService)
         {
             this.personService = personService;
@@ -33,8 +32,12 @@ namespace OIAnalyticsAPI.Controllers
         [HttpGet("{UID_Person}")]
         public async Task<ActionResult<Person>> GetPerson(string UID_Person)
         {  
-            Person person = await personService.GetPerson(UID_Person);
-            if (person == null)
+            try
+            {
+                Person person = await personService.GetPerson(UID_Person);
+                return person;
+            }
+            catch
             {
                 int err = 105;
                 return NotFound(new Error
@@ -43,7 +46,6 @@ namespace OIAnalyticsAPI.Controllers
                     Message = ErrorDictionary.ErrorCodes[err],
                 });
             }
-            return person; 
         }        
     }
 }

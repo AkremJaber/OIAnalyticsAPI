@@ -15,19 +15,23 @@ namespace OIAnalyticsAPI.Services
     public class AssignPersonTenant : IAssignPersonTenant
     {
         private readonly IPowerBIService pbi;
+        private readonly IPersonService personService;
+        private PowerBIClient powerBIClient;
 
-        public AssignPersonTenant(IPowerBIService pbi)
+
+        public AssignPersonTenant(IPowerBIService pbi, IPersonService personService)
         {
+            this.personService = personService;
             this.pbi = pbi;
         }
 
         public async Task AddOneAdminUser(string CCC_WorkspaceId,string email)
         {
-            PowerBIClient pbiClient = pbi.GetPowerBiClient();
+            powerBIClient = pbi.GetPowerBiClient();
             Guid workspaceIdGuid = new Guid(CCC_WorkspaceId);
             if (!string.IsNullOrEmpty(email))
             {
-                await pbiClient.Groups.AddGroupUserAsync(workspaceIdGuid, new GroupUser
+                await powerBIClient.Groups.AddGroupUserAsync(workspaceIdGuid, new GroupUser
                 {
                     EmailAddress = email,
                     GroupUserAccessRight = "Admin"
@@ -37,12 +41,12 @@ namespace OIAnalyticsAPI.Services
 
         public async Task AddDictAdminUser(string CCC_WorkspaceId,PersonDictionary personDictionary)
         {
-            PowerBIClient pbiClient = pbi.GetPowerBiClient();
+            powerBIClient = pbi.GetPowerBiClient();
             Guid workspaceIdGuid = new Guid(CCC_WorkspaceId);
 
             foreach (var person in PersonDictionary.Persons)
             {
-                await pbiClient.Groups.AddGroupUserAsync(workspaceIdGuid, new GroupUser
+                await powerBIClient.Groups.AddGroupUserAsync(workspaceIdGuid, new GroupUser
                 {
                     EmailAddress = person.Key,
                     GroupUserAccessRight = person.Value
@@ -52,11 +56,11 @@ namespace OIAnalyticsAPI.Services
 
         public async Task UpdateOneAdminUser(string CCC_WorkspaceId,string email)
         {
-            PowerBIClient pbiClient = pbi.GetPowerBiClient();
+            powerBIClient = pbi.GetPowerBiClient();
             Guid workspaceIdGuid = new Guid(CCC_WorkspaceId);
             if (!string.IsNullOrEmpty(email))
             {
-                await pbiClient.Groups.AddGroupUserAsync(workspaceIdGuid, new GroupUser
+                await powerBIClient.Groups.AddGroupUserAsync(workspaceIdGuid, new GroupUser
                 {
                     EmailAddress = email,
                     GroupUserAccessRight= "Admin",
@@ -67,11 +71,14 @@ namespace OIAnalyticsAPI.Services
 
         public async Task UpdateDictAdminUser(string CCC_WorkspaceId, PersonDictionary personDictionary)
         {
-            PowerBIClient pbiClient = pbi.GetPowerBiClient();
+            powerBIClient = pbi.GetPowerBiClient();
             Guid workspaceIdGuid = new Guid(CCC_WorkspaceId);
+
             foreach (var person in PersonDictionary.Persons)
                 {
-                await pbiClient.Groups.UpdateGroupUserAsync(workspaceIdGuid, new GroupUser
+               //Person getPerson = await personService.GetPerson(person.Key);
+               //string EmailAddress = getPerson.DefaultEmailAddress;
+                await powerBIClient.Groups.UpdateGroupUserAsync(workspaceIdGuid, new GroupUser
                 {
                     EmailAddress = person.Key,
                     GroupUserAccessRight = person.Value,

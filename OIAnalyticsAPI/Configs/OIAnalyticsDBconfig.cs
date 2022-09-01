@@ -14,5 +14,6 @@ namespace OIAnalyticsAPI.Configs
         public DbSet<Tenant> CCCTenants { get; set;}
         public DbSet<Person> Person { get; set;}
         public DbSet<TenantsHasPersons> CCCTenantsHasPersons { get; set;}
+        public DbSet<DialogConfigParm> DialogConfigParm { get; set; }
     }
 }

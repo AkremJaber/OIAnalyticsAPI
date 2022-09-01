@@ -13,6 +13,7 @@ namespace OIAnalyticsAPI.Models
            {"CreedBratton@IdentiteqLab.onmicrosoft.com","Admin" },
            {"SEAC_Admin@identiteqlab.onmicrosoft.com","Admin" },
            {"khemais.kebaili_securityaccent.com#EXT#@IdentiteqLab.onmicrosoft.com","Member" }
+           //{"c9cde2c3-09e9-4457-94ec-a48769ba124d","Member" }
        };
     }
 }

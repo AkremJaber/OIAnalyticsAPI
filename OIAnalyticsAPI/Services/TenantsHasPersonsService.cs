@@ -29,10 +29,10 @@ namespace OIAnalyticsAPI.Services
 
         public async Task<TenantsHasPersons> AssignTenantToPerson(string UID_Person, string UID_Tenant)
         {
-            var cccTHP = System.Guid.NewGuid().ToString();
-            var xobj = "<Key><T>CCCTenantsHasPersons</T><P>" + cccTHP + "</P></Key>";
+            var ccc_uid_THP = System.Guid.NewGuid().ToString();
+            var xobj = "<Key><T>CCCTenantsHasPersons</T><P>" + ccc_uid_THP + "</P></Key>";
             TenantsHasPersons thp = new TenantsHasPersons();
-            thp.UID_CCCTenantsHasPersons = cccTHP;
+            thp.UID_CCCTenantsHasPersons = ccc_uid_THP;
             thp.CCC_UIDPerson = UID_Person;
             thp.CCC_UIDTenant = UID_Tenant;
             thp.XObjectKey = xobj;

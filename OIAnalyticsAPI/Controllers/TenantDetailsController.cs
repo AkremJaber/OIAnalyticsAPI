@@ -25,7 +25,12 @@ namespace OIAnalyticsAPI.Controllers
         [HttpGet("{CCC_WorkspaceId}")]
         public async Task<ActionResult<TenantDetails>> GetDashboard(string CCC_WorkspaceId)
         {
-            if (await ts.GetTenant(CCC_WorkspaceId) == null)
+            try
+            {
+                var tenantdetails = await tenantDetails.GetTenantDetails(CCC_WorkspaceId);
+                return tenantdetails;
+            }
+            catch
             {
                 int err = 101;
                 return NotFound(new Error
@@ -34,8 +39,6 @@ namespace OIAnalyticsAPI.Controllers
                     Message = ErrorDictionary.ErrorCodes[err],
                 });
             }
-            var tenant = await tenantDetails.GetTenantDetails(CCC_WorkspaceId);
-                return tenant;
         }
     }
 }

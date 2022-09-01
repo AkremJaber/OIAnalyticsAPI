@@ -16,18 +16,43 @@ namespace OIAnalyticsAPI.Controllers
     public class EmbeddedDataSetController : ControllerBase
     {
         public readonly IEmbeddedDataSetService embeddedDS;
-        public readonly ITenantsService ts;
-        public EmbeddedDataSetController(IEmbeddedDataSetService embeddedDS, ITenantsService ts)
+        public readonly ITenantsService tenantservice;
+        public EmbeddedDataSetController(IEmbeddedDataSetService embeddedDS, ITenantsService tenantservice)
         {
             this.embeddedDS = embeddedDS;
-            this.ts = ts;
+            this.tenantservice = tenantservice;
         }
 
         [HttpGet("{CCC_WorkspaceId}/{DataSetId}")]        
         public async Task<ActionResult<EmbeddedDataSetViewModel>> GetDashboard(string CCC_WorkspaceId, string DataSetId)
         {
-            var ds = await embeddedDS.GetDataSet(CCC_WorkspaceId, DataSetId);
-            return ds;
+            try
+            {
+                var dataset = await embeddedDS.GetDataSet(CCC_WorkspaceId, DataSetId);
+                return dataset;
+            }
+            catch
+            {
+                if (await tenantservice.GetTenant(CCC_WorkspaceId) == null)
+                {
+                    int err = 101;
+                    return NotFound(new Error
+                    {
+                        StatusCode = err,
+                        Message = ErrorDictionary.ErrorCodes[err],
+                    });
+                }
+                else
+                {
+                    int err = 104;
+                    return NotFound(new Error
+                    {
+                        StatusCode = err,
+                        Message = ErrorDictionary.ErrorCodes[err],
+                    });
+                }
+            }
+
 
         }
     }

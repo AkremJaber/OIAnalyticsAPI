@@ -15,19 +15,21 @@ namespace OIAnalyticsAPI.Services
     public class EmbeddedDataSetService : IEmbeddedDataSetService
     {
         private readonly IPowerBIService pbi;
-       
+        private PowerBIClient powerBIClient;
+
+
         public EmbeddedDataSetService(IPowerBIService pbi)
         {
             this.pbi = pbi;
         }
         public async Task<EmbeddedDataSetViewModel> GetDataSet(string CCC_WorkspaceId, string DataSetId)
         {
-            PowerBIClient pbiClient = pbi.GetPowerBiClient();
+            powerBIClient = pbi.GetPowerBiClient();
             Guid WorkspaceId = new Guid(CCC_WorkspaceId);
-            var dataset = await pbiClient.Datasets.GetDatasetInGroupAsync(WorkspaceId, DataSetId);
+            var dataset = await powerBIClient.Datasets.GetDatasetInGroupAsync(WorkspaceId, DataSetId);
 
             var tokenRequest = new GenerateTokenRequest(TokenAccessLevel.View);
-            var embedTokenResponse = await pbiClient.Datasets.GenerateTokenAsync(WorkspaceId, DataSetId, tokenRequest);
+            var embedTokenResponse = await powerBIClient.Datasets.GenerateTokenAsync(WorkspaceId, DataSetId, tokenRequest);
             var embedToken = embedTokenResponse.Token;
             var datasetView = new EmbeddedDataSetViewModel
             {

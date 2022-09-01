@@ -31,11 +31,12 @@ namespace OIAnalyticsAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
             services.AddMicrosoftIdentityWebAppAuthentication(Configuration)
                     .EnableTokenAcquisitionToCallDownstreamApi()
                     .AddInMemoryTokenCaches();
+
             services.AddScoped<ITenantsService,TenantsService>();
+            services.AddScoped<IDialogConfigParmService,DialogConfigParmService>();
             services.AddScoped<IAssignPersonTenant, AssignPersonTenant>();
             services.AddScoped<IPersonService, PersonService>();
             services.AddScoped<IPowerBIService, PowerBIService>();

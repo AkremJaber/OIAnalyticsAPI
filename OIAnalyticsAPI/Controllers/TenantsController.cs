@@ -30,17 +30,20 @@ namespace OIAnalyticsAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Tenant>> PostTenant(TenantRequest tenantReq)
+        public async Task<ActionResult<String>> CreateTenant(TenantRequest tenantReq)
         {
             Tenant tenant = await tenantsService.OnboardNewTenant(tenantReq.CCC_Name);
-            return tenant;
+            return tenantReq.CCC_Name+" created succefully" ;
         }
 
         [HttpDelete("{CCC_WorkspaceId}")]
         public async Task<ActionResult<string>> DeleteTenant (string CCC_WorkspaceId)
         {
-            var tenant = await tenantsService.DeleteWorkspace(CCC_WorkspaceId);
-            if (tenant == null)
+            try
+            {
+                await tenantsService.DeleteWorkspace(CCC_WorkspaceId);
+            }
+            catch
             {
                 int err = 101;
                 return NotFound(new Error
@@ -49,14 +52,20 @@ namespace OIAnalyticsAPI.Controllers
                     Message = ErrorDictionary.ErrorCodes[err],
                 });
             }
+          
             return "Tenant deleted succesfully";
         }
 
-        [HttpGet("{UID_CCCTenants}")]
-        public async Task<ActionResult<Tenant>> GetTenantByUID(string UID_CCCTenants)
+        [HttpGet("{CCC_WorkspaceId}")]
+        public async Task<ActionResult<Tenant>> GetTenantByUID(string CCC_WorkspaceId)
         {
+            try
+            {
+                Tenant tenant = await tenantsService.GetTenant(CCC_WorkspaceId);
+                return tenant;
 
-            if (await tenantsService.GetTenantByUID(UID_CCCTenants) == null)
+            }
+            catch
             {
                 int err = 101;
                 return NotFound(new Error
@@ -65,8 +74,6 @@ namespace OIAnalyticsAPI.Controllers
                     Message = ErrorDictionary.ErrorCodes[err],
                 });
             }
-            Tenant tenant = await tenantsService.GetTenantByUID(UID_CCCTenants);
-            return tenant;
         }
 
         [Route("CreateTenantDict")]
@@ -77,7 +84,7 @@ namespace OIAnalyticsAPI.Controllers
             return tenant;
         }
 
-        [Route("UpdateTenant")]
+        [Route("UpdateTenantUserGroup")]
         [HttpPut]
         public async Task<ActionResult<string>> UpdateTenantUser(UpdateTenantRequest tenantReq)
         {
@@ -85,7 +92,7 @@ namespace OIAnalyticsAPI.Controllers
             return "successfully updated";
         }
 
-        [Route("UpdateTenantDict")]
+        [Route("UpdateTenantDictUsersGroup")]
         [HttpPut]
         public async Task<ActionResult<string>> UpdateTenantDictUser(UpdateTenantRequest tenantReq)
         {

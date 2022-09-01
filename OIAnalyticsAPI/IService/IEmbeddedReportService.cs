@@ -10,5 +10,6 @@ namespace OIAnalyticsAPI.IService
    public interface IEmbeddedReportService
     {
         Task<EmbeddedReportViewModel> GetReport(string CCC_WorkspaceId, string ReportId);
+        Task<EmbeddedReportViewModel> CloneReport(string name, string CCC_WorkspaceId, string ReportId);
     }
 }

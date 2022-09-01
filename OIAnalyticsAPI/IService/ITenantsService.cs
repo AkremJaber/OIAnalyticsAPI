@@ -9,8 +9,7 @@ using System.Threading.Tasks;
 namespace OIAnalyticsAPI.IService
 {
     public interface ITenantsService
-    {        
-        Dataset GetDataset(PowerBIClient pbiClient, Guid WorkspaceId, string DatasetName);       
+    {              
         IList<Tenant> GetTenants();
         Task<Tenant> OnboardNewTenant(string name);
         void PublishPBIX(PowerBIClient pbiClient, Guid WorkspaceId, string PbixFilePath, string ImportName);

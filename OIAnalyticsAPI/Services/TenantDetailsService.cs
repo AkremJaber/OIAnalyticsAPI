@@ -14,6 +14,8 @@ namespace OIAnalyticsAPI.Services
     public class TenantDetailsService : ITenantDetailsService
     {
         private readonly IPowerBIService pbi;
+        private PowerBIClient powerBIClient;
+
         public TenantDetailsService(IPowerBIService pbi)
         {
             this.pbi = pbi;  
@@ -21,13 +23,13 @@ namespace OIAnalyticsAPI.Services
 
         public async Task<TenantDetails> GetTenantDetails(string CCC_WorkspaceId)
         {
-            PowerBIClient pbiClient = pbi.GetPowerBiClient();
-            Guid WSID = new Guid(CCC_WorkspaceId);
+            powerBIClient = pbi.GetPowerBiClient();
+            Guid WS_ID = new Guid(CCC_WorkspaceId);
             return  new TenantDetails
             {
-                Datasets = pbiClient.Datasets.GetDatasetsInGroup(WSID).Value,
-                Reports = pbiClient.Reports.GetReportsInGroup(WSID).Value,
-                Dashboard = pbiClient.Dashboards.GetDashboardsInGroup(WSID).Value,
+                Datasets = powerBIClient.Datasets.GetDatasetsInGroup(WS_ID).Value,
+                Reports = powerBIClient.Reports.GetReportsInGroup(WS_ID).Value,
+                Dashboard = powerBIClient.Dashboards.GetDashboardsInGroup(WS_ID).Value,
             };
         }
     }

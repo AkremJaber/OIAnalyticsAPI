@@ -5,12 +5,10 @@ using System.Threading.Tasks;
 
 namespace OIAnalyticsAPI.Models
 {
-    public class EmbeddedDashboardViewModel
+    public class ReportRequest
     {
-        public string DashboardId { get; set; }
         public string Name { get; set; }
-        public string EmbedUrl { get; set; }
-        public string Token { get; set;}
-
+        public string CCC_WorkspaceId { get; set; }
+        public string ReportId { get; set; }
     }
 }
