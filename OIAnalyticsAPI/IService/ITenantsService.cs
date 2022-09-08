@@ -18,6 +18,6 @@ namespace OIAnalyticsAPI.IService
         Task<Tenant> GetTenantByUID(string UID_CCCTenants);
         Task<Tenant> CreateNewTenant(string name, PersonDictionary personDictionary);
         Task UpdateOneUserTenant(string CCC_WorkspaceId, string email);
-        Task UpdateDictUserTenant(string CCC_WorkspaceId, PersonDictionary personDictionary);
+        Task UpdateDictUserTenant(string CCC_WorkspaceId, string UID_Person);
     }
 }

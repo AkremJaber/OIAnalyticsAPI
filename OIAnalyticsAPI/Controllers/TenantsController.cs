@@ -96,7 +96,7 @@ namespace OIAnalyticsAPI.Controllers
         [HttpPut]
         public async Task<ActionResult<string>> UpdateTenantDictUser(UpdateTenantRequest tenantReq)
         {
-            await tenantsService.UpdateDictUserTenant(tenantReq.CCC_WorkspaceId, tenantReq.PersonDictionary);
+            await tenantsService.UpdateDictUserTenant(tenantReq.CCC_WorkspaceId, tenantReq.UID_Person);
             return "successfully updated";
         }
     }

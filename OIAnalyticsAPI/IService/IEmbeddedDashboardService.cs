@@ -10,6 +10,6 @@ namespace OIAnalyticsAPI.IService
     public interface IEmbeddedDashboardService
     {
         Task<EmbeddedDashboardViewModel> GetDashboard(string CCC_WorkspaceId, string DashboardId);
-        Task<EmbeddedDashboardViewModel> PostDashboardInGrp(string CCC_WorkspaceId, string name);
+        Task<DashboardDB> PostDashboardInGrp(string CCC_WorkspaceId, string name);
     }
 }

@@ -143,9 +143,9 @@ namespace OIAnalyticsAPI.Services
             await assignPersonTenant.UpdateOneAdminUser(CCC_WorkspaceId, email); 
         }
 
-        public async Task UpdateDictUserTenant(string CCC_WorkspaceId, PersonDictionary personDictionary)
+        public async Task UpdateDictUserTenant(string CCC_WorkspaceId, string UID_Person)
         {
-            await assignPersonTenant.UpdateDictAdminUser(CCC_WorkspaceId, personDictionary);
+            await assignPersonTenant.UpdateDictAdminUser(CCC_WorkspaceId, UID_Person);
         }
     }
 }

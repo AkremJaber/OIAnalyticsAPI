@@ -16,13 +16,15 @@ namespace OIAnalyticsAPI.Services
     {
         private readonly IPowerBIService pbi;
         private readonly IPersonService personService;
+        private readonly IAADUser ADUserService;
         private PowerBIClient powerBIClient;
 
 
-        public AssignPersonTenant(IPowerBIService pbi, IPersonService personService)
+        public AssignPersonTenant(IPowerBIService pbi, IPersonService personService, IAADUser ADUserService)
         {
             this.personService = personService;
             this.pbi = pbi;
+            this.ADUserService = ADUserService;
         }
 
         public async Task AddOneAdminUser(string CCC_WorkspaceId,string email)
@@ -62,29 +64,68 @@ namespace OIAnalyticsAPI.Services
             {
                 await powerBIClient.Groups.AddGroupUserAsync(workspaceIdGuid, new GroupUser
                 {
-                    EmailAddress = email,
+                    Identifier = email,
                     GroupUserAccessRight= "Admin",
                     PrincipalType="None"
                 });
             }
         }
 
-        public async Task UpdateDictAdminUser(string CCC_WorkspaceId, PersonDictionary personDictionary)
+        public async Task UpdateDictAdminUser(string CCC_WorkspaceId, string UID_Person)
         {
             powerBIClient = pbi.GetPowerBiClient();
             Guid workspaceIdGuid = new Guid(CCC_WorkspaceId);
+            var AdUser = await ADUserService.GetUserPrincipalName(UID_Person);
+            var users = powerBIClient.Groups.GetGroupUsers(workspaceIdGuid).Value;
 
-            foreach (var person in PersonDictionary.Persons)
+            foreach (var groupuser in users)
+            {
+                if (groupuser.Identifier.Equals(AdUser.UserPrincipalName))
                 {
-               //Person getPerson = await personService.GetPerson(person.Key);
-               //string EmailAddress = getPerson.DefaultEmailAddress;
-                await powerBIClient.Groups.UpdateGroupUserAsync(workspaceIdGuid, new GroupUser
-                {
-                    EmailAddress = person.Key,
-                    GroupUserAccessRight = person.Value,
-                    PrincipalType = "None"
-                });
+                    await powerBIClient.Groups.UpdateGroupUserAsync(workspaceIdGuid, new GroupUser
+                    {
+                        Identifier = AdUser.UserPrincipalName,
+                        GroupUserAccessRight = "Admin",
+                        PrincipalType = "None"
+                    });
+                }
             }
+
+
+
+            //powerBIClient = pbi.GetPowerBiClient();
+            //Guid workspaceIdGuid = new Guid(CCC_WorkspaceId);
+            //foreach (var person in PersonDictionary.Persons)
+            //    {
+
+            //    //Person getPerson = await personService.GetPerson(person.Key);
+            //    //string EmailAddress = getPerson.DefaultEmailAddress;
+            //    var users = powerBIClient.Groups.GetGroupUsers(workspaceIdGuid);
+            //   foreach (var groupuser in users.Value)
+            //    {
+            //            if (groupuser.Identifier.Equals(person.Key))
+            //            {
+            //                await powerBIClient.Groups.UpdateGroupUserAsync(workspaceIdGuid, new GroupUser
+            //                {
+
+            //                    Identifier = "CreedBratton@IdentiteqLab.onmicrosoft.com",
+            //                    GroupUserAccessRight = person.Value,
+            //                    PrincipalType = "User"
+            //                });
+            //            }
+            //            else
+            //            {
+            //                await powerBIClient.Groups.AddGroupUserAsync(workspaceIdGuid, new GroupUser
+            //                {
+
+            //                    Identifier = "CreedBratton@IdentiteqLab.onmicrosoft.com",
+            //                    GroupUserAccessRight = person.Value,
+            //                    PrincipalType = "User"
+            //                });
+            //            }
+            //    }
+
+            //}
         }
 
     }

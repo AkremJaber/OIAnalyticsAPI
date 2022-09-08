@@ -13,7 +13,8 @@ namespace OIAnalyticsAPI.Models
            {102,"Report not found" },
            {103,"Dashboard not found" },
            {104,"Dataset not found" },
-           {105,"Person not found" }
+           {105,"Person not found" },
+           {106,"AAD User not found" }
        };
     }
 }

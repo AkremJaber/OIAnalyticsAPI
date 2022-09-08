@@ -10,5 +10,6 @@ namespace OIAnalyticsAPI.Models
         public PersonDictionary PersonDictionary { get; set; }
         public string CCC_WorkspaceId { get; set; }
         public string email { get; set; }
+        public string UID_Person { get; set; }
     }
 }

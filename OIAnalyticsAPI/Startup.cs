@@ -36,6 +36,7 @@ namespace OIAnalyticsAPI
                     .AddInMemoryTokenCaches();
 
             services.AddScoped<ITenantsService,TenantsService>();
+            services.AddScoped<IAADUser,AADUserService>();
             services.AddScoped<IDialogConfigParmService,DialogConfigParmService>();
             services.AddScoped<IAssignPersonTenant, AssignPersonTenant>();
             services.AddScoped<IPersonService, PersonService>();

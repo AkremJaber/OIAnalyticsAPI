@@ -55,7 +55,7 @@ namespace OIAnalyticsAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<EmbeddedDashboardViewModel>> PostDashboard(EmbeddedDashboardRequest EDR)
+        public async Task<ActionResult<DashboardDB>> PostDashboard(EmbeddedDashboardRequest EDR)
         {
             var dash = await embeddedDash.PostDashboardInGrp(EDR.CCC_WorkspaceId, EDR.Name);
             return dash;
