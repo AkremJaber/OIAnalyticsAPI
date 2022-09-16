@@ -107,7 +107,7 @@ namespace OIAnalyticsAPI.Services
             return tenant;
         }
 
-        public async Task<Tenant> CreateNewTenant(string name, Dictionary<String,String>AadUserDict)
+        public async Task<Tenant> CreateNewTenant(string name, List<TestModel>AadUserDict)
         {
             powerBIClient = pbi.GetPowerBiClient();
             Tenant tenant = new Tenant();

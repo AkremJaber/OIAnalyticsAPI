@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace OIAnalyticsAPI.Models
 {
-    public class TenantRequest
+    public class TestModel
     {
-        public string CCC_Name { get; set; }
+        [Key]
         public string UID_Person { get; set; }
-        public List<TestModel> aadUser { get; set; }
+        public string accessRight { get; set; }
     }
-
 }

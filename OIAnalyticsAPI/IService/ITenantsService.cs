@@ -16,7 +16,7 @@ namespace OIAnalyticsAPI.IService
         Task<string> DeleteWorkspace(string CCC_WorkspaceId);
         Task<Tenant> GetTenant(string CCC_WorkspaceId);
         Task<Tenant> GetTenantByUID(string UID_CCCTenants);
-        Task<Tenant> CreateNewTenant(string name, Dictionary<String,String> AadUser);
+        Task<Tenant> CreateNewTenant(string name, List<TestModel> AadUser);
         //Task UpdateOneUserTenant(string CCC_WorkspaceId, string email);
         //Task UpdateDictUserTenant(string CCC_WorkspaceId, string UID_Person);
     }

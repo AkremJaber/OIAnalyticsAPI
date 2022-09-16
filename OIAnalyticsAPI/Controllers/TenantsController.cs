@@ -80,7 +80,7 @@ namespace OIAnalyticsAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Tenant>> AssignListPersonAdmin(TenantRequest tenantReq)
         {
-            Tenant tenant = await tenantsService.CreateNewTenant(tenantReq.CCC_Name, tenantReq.AadUser);
+            Tenant tenant = await tenantsService.CreateNewTenant(tenantReq.CCC_Name, tenantReq.aadUser);
             return tenant;
         }
 

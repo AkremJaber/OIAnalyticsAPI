@@ -13,6 +13,6 @@ namespace OIAnalyticsAPI.IService
         //Task AddDictAdminUser(string CCC_WorkspaceId,PersonDictionary personDictionary);
         //Task UpdateOneAdminUser(string CCC_WorkspaceId, string email);
         Task UpdateDictAdminUser(string CCC_WorkspaceId, string UID_Person);
-        Task UpdateGroupUser(string CCC_WorkspaceId, Dictionary<String, String> AadUserList);
+        Task UpdateGroupUser(string CCC_WorkspaceId, List<TestModel> AadUserList);
     }
 }

@@ -92,7 +92,7 @@ namespace OIAnalyticsAPI.Services
                 }
             }
         }
-        public async Task UpdateGroupUser(string CCC_WorkspaceId, Dictionary<String,String> AadUserList )
+        public async Task UpdateGroupUser(string CCC_WorkspaceId, List<TestModel> AadUserList )
         {
             powerBIClient = pbi.GetPowerBiClient();
             Guid workspaceIdGuid = new Guid(CCC_WorkspaceId);
@@ -100,13 +100,13 @@ namespace OIAnalyticsAPI.Services
             foreach (var Adperson in AadUserList)
             {
                 //Person getPerson = await personService.GetPerson(Adperson.UID_Person);
-                AADUser AADPerson = await ADUserService.GetUserPrincipalName(Adperson.Key);
+                AADUser AADPerson = await ADUserService.GetUserPrincipalName(Adperson.UID_Person);
                 string EmailAddress = AADPerson.UserPrincipalName;
                 //var users = powerBIClient.Groups.GetGroupUsers(workspaceIdGuid);
                 await powerBIClient.Groups.AddGroupUserAsync(workspaceIdGuid, new GroupUser
                        {
                             EmailAddress = EmailAddress,
-                            GroupUserAccessRight = Adperson.Value,
+                            GroupUserAccessRight = Adperson.accessRight,
                             PrincipalType = "User"
                         });
             }
