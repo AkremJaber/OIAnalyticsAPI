@@ -10,8 +10,9 @@ namespace OIAnalyticsAPI.IService
     public interface IAssignPersonTenant
     {
         Task AddOneAdminUser(string CCC_WorkspaceId, string email);
-        Task AddDictAdminUser(string CCC_WorkspaceId,PersonDictionary personDictionary);
-        Task UpdateOneAdminUser(string CCC_WorkspaceId, string email);
+        //Task AddDictAdminUser(string CCC_WorkspaceId,PersonDictionary personDictionary);
+        //Task UpdateOneAdminUser(string CCC_WorkspaceId, string email);
         Task UpdateDictAdminUser(string CCC_WorkspaceId, string UID_Person);
+        Task UpdateGroupUser(string CCC_WorkspaceId, Dictionary<String, String> AadUserList);
     }
 }

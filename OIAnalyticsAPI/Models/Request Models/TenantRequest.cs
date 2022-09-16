@@ -9,7 +9,7 @@ namespace OIAnalyticsAPI.Models
     {
         public string CCC_Name { get; set; }
         public string UID_Person { get; set; }
-        public PersonDictionary PersonDictionary { get; set; }
+        public Dictionary<String,String> AadUser { get; set; }
     }
 
 }

@@ -10,6 +10,6 @@ namespace OIAnalyticsAPI.IService
     {
         IList<AADUser> GetAADUsers();
        // Task<AADUser> GetAADUser(string UID_AADUser);
-        Task<AADUser> GetUserPrincipalName(string UID_Person);
+        Task <AADUser> GetUserPrincipalName(string UID_Person);
     }
 }

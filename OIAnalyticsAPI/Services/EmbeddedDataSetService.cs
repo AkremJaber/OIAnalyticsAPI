@@ -39,5 +39,12 @@ namespace OIAnalyticsAPI.Services
             };
             return datasetView;
         }
+        public async Task DeleteDataset(string CCC_WorkspaceId, string DataSetId)
+        {
+            powerBIClient = pbi.GetPowerBiClient();
+            Guid WorkspaceId = new Guid(CCC_WorkspaceId);
+            await powerBIClient.Datasets.DeleteDatasetAsync(WorkspaceId, DataSetId);
+
+        }
     }
 }

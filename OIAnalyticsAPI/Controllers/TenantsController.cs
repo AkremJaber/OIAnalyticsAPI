@@ -76,28 +76,28 @@ namespace OIAnalyticsAPI.Controllers
             }
         }
 
-        [Route("CreateTenantDict")]
+        [Route("CreateTenantListAADUser")]
         [HttpPost]
         public async Task<ActionResult<Tenant>> AssignListPersonAdmin(TenantRequest tenantReq)
         {
-            Tenant tenant = await tenantsService.CreateNewTenant(tenantReq.CCC_Name, tenantReq.PersonDictionary);
+            Tenant tenant = await tenantsService.CreateNewTenant(tenantReq.CCC_Name, tenantReq.AadUser);
             return tenant;
         }
 
-        [Route("UpdateTenantUserGroup")]
-        [HttpPut]
-        public async Task<ActionResult<string>> UpdateTenantUser(UpdateTenantRequest tenantReq)
-        {
-            await tenantsService.UpdateOneUserTenant(tenantReq.CCC_WorkspaceId, tenantReq.email);
-            return "successfully updated";
-        }
+        //[Route("UpdateTenantUserGroup")]
+        //[HttpPut]
+        //public async Task<ActionResult<string>> UpdateTenantUser(UpdateTenantRequest tenantReq)
+        //{
+        //    await tenantsService.UpdateOneUserTenant(tenantReq.CCC_WorkspaceId, tenantReq.email);
+        //    return "successfully updated";
+        //}
 
-        [Route("UpdateTenantDictUsersGroup")]
-        [HttpPut]
-        public async Task<ActionResult<string>> UpdateTenantDictUser(UpdateTenantRequest tenantReq)
-        {
-            await tenantsService.UpdateDictUserTenant(tenantReq.CCC_WorkspaceId, tenantReq.UID_Person);
-            return "successfully updated";
-        }
+        //[Route("UpdateTenantDictUsersGroup")]
+        //[HttpPut]
+        //public async Task<ActionResult<string>> UpdateTenantDictUser(UpdateTenantRequest tenantReq)
+        //{
+        //    await tenantsService.UpdateDictUserTenant(tenantReq.CCC_WorkspaceId, tenantReq.UID_Person);
+        //    return "successfully updated";
+        //}
     }
 }

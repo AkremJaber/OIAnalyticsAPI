@@ -7,6 +7,7 @@ using OIAnalyticsAPI.IService;
 using OIAnalyticsAPI.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -66,6 +67,27 @@ namespace OIAnalyticsAPI.Services
                 Token = embedToken
             };
             return reportView;
+
+        }
+        public async Task<string> DeleteReport(string CCC_WorkspaceId, string ReportId)
+        {
+            powerBIClient = pbi.GetPowerBiClient();
+            Guid WSID = new Guid(CCC_WorkspaceId);
+            Guid RepId = new Guid(ReportId);
+            await powerBIClient.Reports.DeleteReportInGroupAsync(WSID, RepId);
+
+            return "Report deleted succesfully";
+        }
+
+        public async Task ExportReport(string CCC_WorkspaceId,string ReportId)
+        {
+            powerBIClient = pbi.GetPowerBiClient();
+            Guid WSID = new Guid(CCC_WorkspaceId);
+            Guid RepId = new Guid(ReportId);
+
+            ExportReportRequest req = new ExportReportRequest();
+            await powerBIClient.Reports.ExportToFileAsync(WSID, RepId,req);
+            
 
         }
     }

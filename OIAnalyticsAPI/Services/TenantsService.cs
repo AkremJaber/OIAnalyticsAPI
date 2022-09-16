@@ -107,7 +107,7 @@ namespace OIAnalyticsAPI.Services
             return tenant;
         }
 
-        public async Task<Tenant> CreateNewTenant(string name,PersonDictionary personDictionary)
+        public async Task<Tenant> CreateNewTenant(string name, Dictionary<String,String>AadUserDict)
         {
             powerBIClient = pbi.GetPowerBiClient();
             Tenant tenant = new Tenant();
@@ -128,7 +128,7 @@ namespace OIAnalyticsAPI.Services
             tenant.XObjectKey = xobj;
             string adminUser = Configuration["DemoSettings:AdminUser"];
             // add user as new workspace admin  AddGroupUserAsync
-            await assignPersonTenant.AddDictAdminUser(tenant.CCC_WorkspaceId, personDictionary);
+            await assignPersonTenant.UpdateGroupUser(tenant.CCC_WorkspaceId, AadUserDict);
 
             string pbixPath = @"C:\API\OIAnalyticsAPI\OIAnalyticsAPI\PBIX\test_Oneidentity_person.pbix";
             string importName = "Person_roles";
@@ -138,14 +138,14 @@ namespace OIAnalyticsAPI.Services
             return tenant;
         }
 
-        public async Task UpdateOneUserTenant(string CCC_WorkspaceId, string email)
-        {
-            await assignPersonTenant.UpdateOneAdminUser(CCC_WorkspaceId, email); 
-        }
+        //public async Task UpdateOneUserTenant(string CCC_WorkspaceId, string email)
+        //{
+        //    await assignPersonTenant.UpdateOneAdminUser(CCC_WorkspaceId, email); 
+        //}
 
-        public async Task UpdateDictUserTenant(string CCC_WorkspaceId, string UID_Person)
-        {
-            await assignPersonTenant.UpdateDictAdminUser(CCC_WorkspaceId, UID_Person);
-        }
+        //public async Task UpdateDictUserTenant(string CCC_WorkspaceId, string UID_Person)
+        //{
+        //    await assignPersonTenant.UpdateDictAdminUser(CCC_WorkspaceId, UID_Person);
+        //}
     }
 }

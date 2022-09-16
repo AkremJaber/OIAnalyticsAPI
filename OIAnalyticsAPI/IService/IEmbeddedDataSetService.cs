@@ -10,5 +10,6 @@ namespace OIAnalyticsAPI.IService
     public interface IEmbeddedDataSetService
     {
         Task<EmbeddedDataSetViewModel> GetDataSet(string CCC_WorkspaceId, string DataSetId);
+        Task DeleteDataset(string CCC_WorkspaceId, string DataSetId);
     }
 }

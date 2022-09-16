@@ -4,6 +4,7 @@ using OIAnalyticsAPI.IService;
 using OIAnalyticsAPI.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -21,7 +22,7 @@ namespace OIAnalyticsAPI.Controllers
             this.embeddedReport = embeddedReport;
             this.tenantservice = tenantservice;
         }
-
+        
         [HttpGet("{CCC_WorkspaceId}/{ReportId}")]        
         public async Task<ActionResult<EmbeddedReportViewModel>> GetReport (string CCC_WorkspaceId,string ReportId)
         {
@@ -84,6 +85,75 @@ namespace OIAnalyticsAPI.Controllers
 
             }
         }
+        [HttpDelete("{CCC_WorkspaceId}/{ReportId}")]
+        public async Task<ActionResult<string>> DeleteReport(string CCC_WorkspaceId, string ReportId)
+        {
+            try
+            {
+                await embeddedReport.DeleteReport(CCC_WorkspaceId,ReportId);
+                return "Report deleted succesfully";
+
+            }
+            catch 
+            {
+                if (await tenantservice.GetTenant(CCC_WorkspaceId) == null)
+                {
+                    int err = 101;
+                    return NotFound(new Error
+                    {
+                        StatusCode = err,
+                        Message = ErrorDictionary.ErrorCodes[err],
+                    });
+                }
+                else
+                {
+                    int err = 102;
+                    return NotFound(new Error
+                    {
+                        StatusCode = err,
+                        Message = ErrorDictionary.ErrorCodes[err],
+                    });
+                }
+
+            }
+        }
+
+        //[Route("Export")]
+        //[HttpGet("{CCC_WorkspaceId}/{ReportId}")]
+        //public async Task<ActionResult> Export(string CCC_WorkspaceId, string ReportId)
+        //{
+        //    try
+        //    {
+        //        await embeddedReport.ExportReport(CCC_WorkspaceId,ReportId);
+                
+
+        //    }
+        //    catch
+        //    {
+        //        if (await tenantservice.GetTenant(CCC_WorkspaceId) == null)
+        //        {
+        //            int err = 101;
+        //            return NotFound(new Error
+        //            {
+        //                StatusCode = err,
+        //                Message = ErrorDictionary.ErrorCodes[err],
+        //            });
+        //        }
+        //        else
+        //        {
+        //            int err = 102;
+        //            return NotFound(new Error
+        //            {
+        //                StatusCode = err,
+        //                Message = ErrorDictionary.ErrorCodes[err],
+        //            });
+        //        }
+
+        //    }
+
+        //}
+
+
 
     }
 }
