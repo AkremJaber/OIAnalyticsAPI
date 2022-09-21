@@ -18,6 +18,7 @@ namespace OIAnalyticsAPI.Services
 {    
     public class TenantsService : ITenantsService
     {
+
         private readonly IPersonService Ps;
         private PowerBIClient powerBIClient;
         private IDialogConfigParmService parmService;
@@ -107,7 +108,7 @@ namespace OIAnalyticsAPI.Services
             return tenant;
         }
 
-        public async Task<Tenant> CreateNewTenant(string name, List<TestModel>AadUserDict)
+        public async Task<Tenant> CreateNewTenant(string name, List<AddGroupModel> AadUserDict)
         {
             powerBIClient = pbi.GetPowerBiClient();
             Tenant tenant = new Tenant();

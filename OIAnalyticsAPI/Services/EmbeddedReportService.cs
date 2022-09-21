@@ -48,6 +48,29 @@ namespace OIAnalyticsAPI.Services
             return reportView;
         }
 
+        public async Task<EmbeddedReportViewModel> EditReport(string CCC_WorkspaceId, string ReportId)
+        {
+            powerBIClient = pbi.GetPowerBiClient();
+            Guid WorkspaceId = new Guid(CCC_WorkspaceId);
+            Guid reportId = new Guid(ReportId);
+            // call to Power BI Service API to get embedding data
+            var report = await powerBIClient.Reports.GetReportInGroupAsync(WorkspaceId, reportId);
+            // generate read-only embed token for the report
+            var datasetId = report.DatasetId;
+            var tokenRequest = new GenerateTokenRequest(TokenAccessLevel.Create, datasetId);
+            var embedTokenResponse = await powerBIClient.Reports.GenerateTokenAsync(WorkspaceId, reportId, tokenRequest);
+            var embedToken = embedTokenResponse.Token;
+            // return report embedding data to caller
+            var reportView = new EmbeddedReportViewModel
+            {
+                ReportId = report.Id.ToString(),
+                EmbedUrl = report.EmbedUrl,
+                Name = report.Name,
+                Token = embedToken
+            };
+            return reportView;
+        }
+
         public async Task<EmbeddedReportViewModel> CloneReport(string name, string CCC_WorkspaceId, string ReportId)
         {
             powerBIClient = pbi.GetPowerBiClient();
@@ -79,15 +102,16 @@ namespace OIAnalyticsAPI.Services
             return "Report deleted succesfully";
         }
 
-        public async Task ExportReport(string CCC_WorkspaceId,string ReportId)
+        public async Task<string> ExportReport(string CCC_WorkspaceId,string ReportId)
         {
             powerBIClient = pbi.GetPowerBiClient();
             Guid WSID = new Guid(CCC_WorkspaceId);
             Guid RepId = new Guid(ReportId);
 
-            ExportReportRequest req = new ExportReportRequest();
-            await powerBIClient.Reports.ExportToFileAsync(WSID, RepId,req);
-            
+            var req = new ExportReportRequest { Format = FileFormat.PDF };
+
+          var export=  await powerBIClient.Reports.ExportToFileInGroupAsync(WSID,RepId,req);
+            return export.Id;
 
         }
     }

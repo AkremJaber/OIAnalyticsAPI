@@ -92,7 +92,7 @@ namespace OIAnalyticsAPI.Services
                 }
             }
         }
-        public async Task UpdateGroupUser(string CCC_WorkspaceId, List<TestModel> AadUserList )
+        public async Task UpdateGroupUser(string CCC_WorkspaceId, List<AddGroupModel> AadUserList )
         {
             powerBIClient = pbi.GetPowerBiClient();
             Guid workspaceIdGuid = new Guid(CCC_WorkspaceId);
@@ -112,7 +112,7 @@ namespace OIAnalyticsAPI.Services
             }
         }
 
-        //public async Task Update (string CCC_WorkspaceId)
+        
     }
 }
 

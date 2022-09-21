@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace OIAnalyticsAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class EmbeddedReportController : ControllerBase
     {
@@ -29,6 +29,37 @@ namespace OIAnalyticsAPI.Controllers
             try
             {
                 var report = await embeddedReport.GetReport(CCC_WorkspaceId, ReportId);
+                return report;
+            }
+            catch
+            {
+                if (await tenantservice.GetTenant(CCC_WorkspaceId) == null)
+                {
+                    int err = 101;
+                    return NotFound(new Error
+                    {
+                        StatusCode = err,
+                        Message = ErrorDictionary.ErrorCodes[err],
+                    });
+                }
+                else
+                {
+                    int err = 102;
+                    return NotFound(new Error
+                    {
+                        StatusCode = err,
+                        Message = ErrorDictionary.ErrorCodes[err],
+                    });
+                }
+            }
+        }
+        
+        [HttpGet("{CCC_WorkspaceId}/{ReportId}")]
+        public async Task<ActionResult<EmbeddedReportViewModel>> EditReport(string CCC_WorkspaceId, string ReportId)
+        {
+            try
+            {
+                var report = await embeddedReport.EditReport(CCC_WorkspaceId, ReportId);
                 return report;
             }
             catch
@@ -118,42 +149,42 @@ namespace OIAnalyticsAPI.Controllers
             }
         }
 
-        //[Route("Export")]
-        //[HttpGet("{CCC_WorkspaceId}/{ReportId}")]
-        //public async Task<ActionResult> Export(string CCC_WorkspaceId, string ReportId)
-        //{
-        //    try
-        //    {
-        //        await embeddedReport.ExportReport(CCC_WorkspaceId,ReportId);
-                
+       
+        [HttpPost("{CCC_WorkspaceId}/{ReportId}")]
+        public async Task<ActionResult<string>> Export(string CCC_WorkspaceId, string ReportId)
+        {
+            try
+            {
+                await embeddedReport.ExportReport(CCC_WorkspaceId, ReportId);
+                return "exported";
 
-        //    }
-        //    catch
-        //    {
-        //        if (await tenantservice.GetTenant(CCC_WorkspaceId) == null)
-        //        {
-        //            int err = 101;
-        //            return NotFound(new Error
-        //            {
-        //                StatusCode = err,
-        //                Message = ErrorDictionary.ErrorCodes[err],
-        //            });
-        //        }
-        //        else
-        //        {
-        //            int err = 102;
-        //            return NotFound(new Error
-        //            {
-        //                StatusCode = err,
-        //                Message = ErrorDictionary.ErrorCodes[err],
-        //            });
-        //        }
+            }
+            catch
+            {
+                if (await tenantservice.GetTenant(CCC_WorkspaceId) == null)
+                {
+                    int err = 101;
+                    return NotFound(new Error
+                    {
+                        StatusCode = err,
+                        Message = ErrorDictionary.ErrorCodes[err],
+                    });
+                }
+                else
+                {
+                    int err = 102;
+                    return NotFound(new Error
+                    {
+                        StatusCode = err,
+                        Message = ErrorDictionary.ErrorCodes[err],
+                    });
+                }
 
-        //    }
+            }
 
-        //}
+            }
 
 
 
-    }
+        }
 }

@@ -9,7 +9,7 @@ namespace OIAnalyticsAPI.Models
     {
         public string CCC_Name { get; set; }
         public string UID_Person { get; set; }
-        public List<TestModel> aadUser { get; set; }
+        public List<AddGroupModel> aadUser { get; set; }
     }
 
 }

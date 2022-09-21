@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OIAnalyticsAPI.Models
 {
-    public class TestModel
+    public class AddGroupModel
     {
         [Key]
         public string UID_Person { get; set; }

@@ -60,5 +60,14 @@ namespace OIAnalyticsAPI.Controllers
             var dash = await embeddedDash.PostDashboardInGrp(EDR.CCC_WorkspaceId, EDR.Name);
             return dash;
         }
+        [Route("all")]
+        [HttpGet]
+        public async Task<ActionResult<AllDashboards>> AllDashboards()
+        {
+            var dash = await embeddedDash.GetAllDashboards();
+            return dash;
+        }
+
+
     }
 }

@@ -16,13 +16,15 @@ namespace OIAnalyticsAPI.Services
 {
     public class EmbeddedDashboardService : IEmbeddedDashboardService
     {
+        private readonly ITenantsService tenantsService;
         private readonly IPowerBIService pbi;
         private PowerBIClient powerBIClient;
         public OIAnalyticsDBconfig dbContext;
 
 
-        public EmbeddedDashboardService(IPowerBIService pbi, OIAnalyticsDBconfig dbContext)
+        public EmbeddedDashboardService(IPowerBIService pbi, OIAnalyticsDBconfig dbContext, ITenantsService tenantsService)
         {
+            this.tenantsService = tenantsService;
             this.dbContext = dbContext;
             this.pbi = pbi;
         }
@@ -47,33 +49,34 @@ namespace OIAnalyticsAPI.Services
         public async Task<DashboardDB> PostDashboardInGrp(string CCC_WorkspaceId, string name)
         {
             powerBIClient = pbi.GetPowerBiClient();
+            DashboardDB dashboard = new DashboardDB();
             AddDashboardRequest request = new AddDashboardRequest(name);
             Guid WSID = new Guid(CCC_WorkspaceId);
             Dashboard dash = await powerBIClient.Dashboards.AddDashboardInGroupAsync(WSID, request);
 
-            DashboardDB dashboard = new DashboardDB();
             dashboard.CCC_DashboardId = dash.Id.ToString();
             dashboard.CCC_DisplayName = name;
             dashboard.CCC_IsReadOnly = dash.IsReadOnly.Value;
-            dashboard.CCC_WorkspaceId = CCC_WorkspaceId;
-            dashboard.UID_CCCDashboard = dash.Id.ToString();
+            Tenant tenant = await tenantsService.GetTenant(CCC_WorkspaceId);
+            dashboard.CCC_WorkspaceId = tenant.UID_CCCTenants;
+            var ccc_uid_Dash = System.Guid.NewGuid().ToString();
+            dashboard.UID_CCCDashboard = ccc_uid_Dash;
             var xobj = "<Key><T>CCCDasboard</T><P>" + dashboard.UID_CCCDashboard + "</P></Key>";
             dashboard.XObjectKey = xobj;
             dashboard.CCC_EmbedURL = dash.EmbedUrl;
             dbContext.CCCDashboard.Add(dashboard);
             dbContext.SaveChanges();
-
-            var dashView = new DashboardDB
-            {
-                
-                CCC_DisplayName=name,
-                CCC_DashboardId = dash.Id.ToString(),
-                CCC_WorkspaceId= CCC_WorkspaceId,
-                CCC_EmbedURL = dash.EmbedUrl,                
-            };
-            return dashView;
+            return dashboard;
         }
 
-        
+        public async Task<AllDashboards> GetAllDashboards()
+        {
+            powerBIClient = pbi.GetPowerBiClient();
+            return new AllDashboards
+            {
+                Dashboard = powerBIClient.Dashboards.GetDashboardsAsAdmin().Value
+            };
+        }
     }
 }
+
