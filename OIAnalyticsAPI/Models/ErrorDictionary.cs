@@ -14,7 +14,8 @@ namespace OIAnalyticsAPI.Models
            {103,"Dashboard not found" },
            {104,"Dataset not found" },
            {105,"Person not found" },
-           {106,"AAD User not found" }
+           {106,"AAD User not found"},
+           {107,"Not authorized to delete this dashboard"}
        };
     }
 }

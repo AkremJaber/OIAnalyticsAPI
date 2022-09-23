@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.PowerBI.Api.Models;
 using OIAnalyticsAPI.IService;
 using OIAnalyticsAPI.Models;
 using System;
@@ -60,11 +61,49 @@ namespace OIAnalyticsAPI.Controllers
             var dash = await embeddedDash.PostDashboardInGrp(EDR.CCC_WorkspaceId, EDR.Name);
             return dash;
         }
+
         [Route("all")]
         [HttpGet]
         public async Task<ActionResult<AllDashboards>> AllDashboards()
         {
             var dash = await embeddedDash.GetAllDashboards();
+            return dash;
+        }
+
+        [Route("WorkspaceDashboards")]
+        [HttpGet]
+        public async Task<ActionResult<Dashboards>> GetWorkspaceDashboards(string CCC_WorkspaceId)
+        {
+            var dash = await embeddedDash.GetDash(CCC_WorkspaceId);
+            return dash;
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult<string>> DeleteDBDashboard(string UID_CCCDashboard)
+        {
+            try
+            {
+                var del = await embeddedDash.DeleteDashboard(UID_CCCDashboard);
+                return del;
+            }
+            catch 
+            {
+                int err = 107;
+                return NotFound(new Error
+                {
+                    StatusCode = err,
+                    Message = ErrorDictionary.ErrorCodes[err],
+                });
+
+
+            }
+            
+        }
+        [Route("DashboardDB")]
+        [HttpGet]
+        public async Task<ActionResult<DashboardDB>> GetByUID(string UID_CCCDashboard)
+        {
+            var dash = await embeddedDash.GetDashbyUID(UID_CCCDashboard);
             return dash;
         }
 

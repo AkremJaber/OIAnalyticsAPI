@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Web;
 using Microsoft.PowerBI.Api;
 using Microsoft.PowerBI.Api.Models;
@@ -53,17 +54,16 @@ namespace OIAnalyticsAPI.Services
             AddDashboardRequest request = new AddDashboardRequest(name);
             Guid WSID = new Guid(CCC_WorkspaceId);
             Dashboard dash = await powerBIClient.Dashboards.AddDashboardInGroupAsync(WSID, request);
-
             dashboard.CCC_DashboardId = dash.Id.ToString();
             dashboard.CCC_DisplayName = name;
-            dashboard.CCC_IsReadOnly = dash.IsReadOnly.Value;
+            //dashboard.CCC_IsReadOnly = dash.IsReadOnly.Value;
             Tenant tenant = await tenantsService.GetTenant(CCC_WorkspaceId);
             dashboard.CCC_WorkspaceId = tenant.UID_CCCTenants;
             var ccc_uid_Dash = System.Guid.NewGuid().ToString();
             dashboard.UID_CCCDashboard = ccc_uid_Dash;
-            var xobj = "<Key><T>CCCDasboard</T><P>" + dashboard.UID_CCCDashboard + "</P></Key>";
+            var xobj = "<Key><T>CCCDashboard</T><P>" + dashboard.UID_CCCDashboard + "</P></Key>";
             dashboard.XObjectKey = xobj;
-            dashboard.CCC_EmbedURL = dash.EmbedUrl;
+            //dashboard.CCC_EmbedURL = dash.EmbedUrl;
             dbContext.CCCDashboard.Add(dashboard);
             dbContext.SaveChanges();
             return dashboard;
@@ -76,6 +76,30 @@ namespace OIAnalyticsAPI.Services
             {
                 Dashboard = powerBIClient.Dashboards.GetDashboardsAsAdmin().Value
             };
+        }
+
+        public async Task<Dashboards> GetDash(string CCC_WorkspaceId)
+        {
+            powerBIClient = pbi.GetPowerBiClient();
+            Guid WorkspaceId = new Guid(CCC_WorkspaceId);
+            var dashboards = await powerBIClient.Dashboards.GetDashboardsInGroupAsync(WorkspaceId);
+            
+            return dashboards;
+
+
+        }
+        public async Task<DashboardDB> GetDashbyUID(string UID_CCCDashboard)
+        {
+            var dash = await dbContext.CCCDashboard.Where(dashb => dashb.UID_CCCDashboard == UID_CCCDashboard).FirstOrDefaultAsync();
+            return dash;
+        }
+
+        public async Task<string> DeleteDashboard(string UID_CCCDashboard)
+        {
+            var dash = await GetDashbyUID(UID_CCCDashboard);
+            dbContext.CCCDashboard.Remove(dash);
+            await dbContext.SaveChangesAsync();
+            return "Dashboard deleted succesfully";
         }
     }
 }

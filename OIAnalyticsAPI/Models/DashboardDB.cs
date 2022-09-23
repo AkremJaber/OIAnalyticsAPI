@@ -13,8 +13,7 @@ namespace OIAnalyticsAPI.Models
         public string CCC_WorkspaceId { get; set; }
         public string CCC_DashboardId { get; set; }
         public string CCC_DisplayName { get; set; }
-        public string CCC_EmbedURL { get; set; }
-        public bool CCC_IsReadOnly { get; set; }
+        //public bool CCC_IsReadOnly { get; set; }
         public string XObjectKey { get; set; }
     }
 }

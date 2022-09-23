@@ -33,7 +33,7 @@ namespace OIAnalyticsAPI.Controllers
         public async Task<ActionResult<String>> CreateTenant(TenantRequest tenantReq)
         {
             Tenant tenant = await tenantsService.OnboardNewTenant(tenantReq.CCC_Name);
-            return tenantReq.CCC_Name+" created succefully" ;
+            return tenantReq.CCC_Name+" created succefully";
         }
 
         [HttpDelete("{CCC_WorkspaceId}")]
