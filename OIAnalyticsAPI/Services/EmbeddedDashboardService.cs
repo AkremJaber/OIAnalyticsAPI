@@ -74,7 +74,7 @@ namespace OIAnalyticsAPI.Services
             powerBIClient = pbi.GetPowerBiClient();
             return new AllDashboards
             {
-                Dashboard = powerBIClient.Dashboards.GetDashboardsAsAdmin().Value
+                Dashboard = powerBIClient.Dashboards.GetDashboards().Value
             };
         }
 
@@ -94,12 +94,21 @@ namespace OIAnalyticsAPI.Services
             return dash;
         }
 
-        public async Task<string> DeleteDashboard(string UID_CCCDashboard)
+        public async Task<string> DeleteDashboard(string CCC_WorkspaceId, string DashboardId)
         {
-            var dash = await GetDashbyUID(UID_CCCDashboard);
-            dbContext.CCCDashboard.Remove(dash);
-            await dbContext.SaveChangesAsync();
-            return "Dashboard deleted succesfully";
+            powerBIClient = pbi.GetPowerBiClient();
+            Guid WSID = new Guid(CCC_WorkspaceId);
+            Guid DashId = new Guid(DashboardId);
+
+            await powerBIClient.Dashboards.DeleteDashboardInGroupAsync(WSID, DashId);
+            return "Dashboard deleted successfully";
+
+
+
+            //var dash = await GetDashbyUID(UID_CCCDashboard);
+            //dbContext.CCCDashboard.Remove(dash);
+            //await dbContext.SaveChangesAsync();
+            //return "Dashboard deleted succesfully";
         }
     }
 }

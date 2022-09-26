@@ -15,6 +15,6 @@ namespace OIAnalyticsAPI.IService
         Task<AllDashboards> GetAllDashboards();
         Task<Dashboards> GetDash(string CCC_WorkspaceId);
         Task<DashboardDB> GetDashbyUID(string UID_CCCDashboard);
-        Task<string> DeleteDashboard(string UID_CCCDashboard);
+        Task<string> DeleteDashboard(string CCC_WorkspaceId, string DashboardId);
     }
 }

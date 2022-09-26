@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OIAnalyticsAPI.IService;
 using OIAnalyticsAPI.Models;
+using OIAnalyticsAPI.Models.Request_Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -150,37 +151,45 @@ namespace OIAnalyticsAPI.Controllers
         }
 
        
-        [HttpPost("{CCC_WorkspaceId}/{ReportId}")]
-        public async Task<ActionResult<string>> Export(string CCC_WorkspaceId, string ReportId)
+        [HttpPost]
+        public async Task<ActionResult<string>> Export(ExportReportRequest exportReport )
         {
-            try
-            {
-                await embeddedReport.ExportReport(CCC_WorkspaceId, ReportId);
+            //try
+            //{
+                await embeddedReport.ExportReport(exportReport.CCC_WorkspaceId,exportReport.ReportId, exportReport.ExportName, exportReport.ExportFileFormat);
                 return "exported";
+            //}
+            //catch
+            //{
+            //    if (await tenantservice.GetTenant(exportReport.CCC_WorkspaceId) == null)
+            //    {
+            //        int err = 101;
+            //        return NotFound(new Error
+            //        {
+            //            StatusCode = err,
+            //            Message = ErrorDictionary.ErrorCodes[err],
+            //        });
+            //    }
+            //    if (await embeddedReport.GetReport(exportReport.CCC_WorkspaceId,exportReport.ReportId) == null)
+            //    {
+            //        int err = 102;
+            //        return NotFound(new Error
+            //        {
+            //            StatusCode = err,
+            //            Message = ErrorDictionary.ErrorCodes[err],
+            //        });
+            //    }
+            //    else
+            //    {
+            //        int err = 108;
+            //        return NotFound(new Error
+            //        {
+            //            StatusCode = err,
+            //            Message = ErrorDictionary.ErrorCodes[err],
+            //        });
+            //    }
 
-            }
-            catch
-            {
-                if (await tenantservice.GetTenant(CCC_WorkspaceId) == null)
-                {
-                    int err = 101;
-                    return NotFound(new Error
-                    {
-                        StatusCode = err,
-                        Message = ErrorDictionary.ErrorCodes[err],
-                    });
-                }
-                else
-                {
-                    int err = 102;
-                    return NotFound(new Error
-                    {
-                        StatusCode = err,
-                        Message = ErrorDictionary.ErrorCodes[err],
-                    });
-                }
-
-            }
+            //}
 
             }
 

@@ -84,6 +84,15 @@ namespace OIAnalyticsAPI.Controllers
             return tenant;
         }
 
+        [Route("GroupUsers")]
+        [HttpGet]
+        public async Task<ActionResult<GroupUsers>> GrpUsers(string CCC_WorkspaceId)
+        {
+            var grps = await tenantsService.GetGrpUsers(CCC_WorkspaceId);
+            return grps;
+        }
+
+
         //[Route("UpdateTenantUserGroup")]
         //[HttpPut]
         //public async Task<ActionResult<string>> UpdateTenantUser(UpdateTenantRequest tenantReq)

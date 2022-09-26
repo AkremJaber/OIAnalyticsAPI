@@ -139,6 +139,14 @@ namespace OIAnalyticsAPI.Services
             return tenant;
         }
 
+        public async Task<GroupUsers> GetGrpUsers(string CCC_WorkspaceId)
+        {
+            powerBIClient = pbi.GetPowerBiClient();
+            Guid workspaceIdGuid = new Guid(CCC_WorkspaceId);
+            var grp = await powerBIClient.Groups.GetGroupUsersAsync(workspaceIdGuid);
+            return grp;
+        }
+
         //public async Task UpdateOneUserTenant(string CCC_WorkspaceId, string email)
         //{
         //    await assignPersonTenant.UpdateOneAdminUser(CCC_WorkspaceId, email); 

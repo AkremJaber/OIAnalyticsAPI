@@ -79,22 +79,42 @@ namespace OIAnalyticsAPI.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult<string>> DeleteDBDashboard(string UID_CCCDashboard)
+        public async Task<ActionResult<string>> DeleteDBDashboard(string CCC_WorkspaceId, string DashboardId)
         {
             try
             {
-                var del = await embeddedDash.DeleteDashboard(UID_CCCDashboard);
+                var del = await embeddedDash.DeleteDashboard(CCC_WorkspaceId,DashboardId);
                 return del;
             }
             catch 
             {
-                int err = 107;
-                return NotFound(new Error
+                if (await tenantservice.GetTenant(CCC_WorkspaceId) == null)
                 {
-                    StatusCode = err,
-                    Message = ErrorDictionary.ErrorCodes[err],
-                });
-
+                    int err = 101;
+                    return NotFound(new Error
+                    {
+                        StatusCode = err,
+                        Message = ErrorDictionary.ErrorCodes[err],
+                    });
+                }
+                if (await embeddedDash.GetDashboard(CCC_WorkspaceId,DashboardId) == null)
+                {
+                    int err = 103;
+                    return NotFound(new Error
+                    {
+                        StatusCode = err,
+                        Message = ErrorDictionary.ErrorCodes[err],
+                    });
+                }
+                else
+                {
+                    int err = 109;
+                    return NotFound(new Error
+                    {
+                        StatusCode = err,
+                        Message = ErrorDictionary.ErrorCodes[err],
+                    });
+                }
 
             }
             
