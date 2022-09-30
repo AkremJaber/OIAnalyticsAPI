@@ -156,7 +156,7 @@ namespace OIAnalyticsAPI.Controllers
         {
             //try
             //{
-                await embeddedReport.ExportReport(exportReport.CCC_WorkspaceId,exportReport.ReportId, exportReport.ExportName, exportReport.ExportFileFormat);
+                await embeddedReport.ExportReport(exportReport.ExportType,exportReport.CCC_WorkspaceId,exportReport.ReportId, exportReport.ExportName, exportReport.ExportFileFormat);
                 return "exported";
             //}
             //catch

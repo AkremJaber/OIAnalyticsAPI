@@ -56,16 +56,14 @@ namespace OIAnalyticsAPI.Controllers
             }
             catch
             {
-                int err = 106;
-                return NotFound(new Error
-                {
-                    StatusCode = err,
-                    Message = ErrorDictionary.ErrorCodes[err],
-                });
+                    int err = 106;
+                    return NotFound(new Error
+                    {
+                        StatusCode = err,
+                        Message = ErrorDictionary.ErrorCodes[err],
+                    });
+                }
             }
         }
-
-        
-
     }
-}
+

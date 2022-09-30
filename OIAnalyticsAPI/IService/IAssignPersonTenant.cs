@@ -12,7 +12,7 @@ namespace OIAnalyticsAPI.IService
         Task AddOneAdminUser(string CCC_WorkspaceId, string email);
         //Task AddDictAdminUser(string CCC_WorkspaceId,PersonDictionary personDictionary);
         //Task UpdateOneAdminUser(string CCC_WorkspaceId, string email);
-        Task UpdateDictAdminUser(string CCC_WorkspaceId, string UID_Person);
+        Task AddGrpUsers(string CCC_WorkspaceId, List<AddGroupModel> AadUserList, string groupUserAccessRight);
         Task UpdateGroupUser(string CCC_WorkspaceId, List<AddGroupModel> AadUserList);
     }
 }

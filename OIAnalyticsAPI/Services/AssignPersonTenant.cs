@@ -71,25 +71,36 @@ namespace OIAnalyticsAPI.Services
         //    }
         //}
 
-        public async Task UpdateDictAdminUser(string CCC_WorkspaceId, string UID_Person)
+        public async Task AddGrpUsers(string CCC_WorkspaceId, List<AddGroupModel> AadUserList,string groupUserAccessRight)
         {
 
             powerBIClient = pbi.GetPowerBiClient();
             Guid workspaceIdGuid = new Guid(CCC_WorkspaceId);
-            var AdUser = await ADUserService.GetUserPrincipalName(UID_Person);
-            var users = powerBIClient.Groups.GetGroupUsers(workspaceIdGuid).Value;
-
-            foreach (var groupuser in users)
+            //var users = powerBIClient.Groups.GetGroupUsers(workspaceIdGuid).Value;
+            foreach (var Adperson in AadUserList) 
             {
-                if (groupuser.Identifier.Equals(AdUser.UserPrincipalName))
-                {
-                    await powerBIClient.Groups.UpdateGroupUserAsync(workspaceIdGuid, new GroupUser
+              var AdUser = await ADUserService.GetUserPrincipalName(Adperson.UID_Person);
+                
+                   // if (groupuser.Identifier.Equals(AdUser.UserPrincipalName))
+                   // {
+                    await powerBIClient.Groups.AddGroupUserAsync(workspaceIdGuid, new GroupUser
                     {
                         Identifier = AdUser.UserPrincipalName,
-                        GroupUserAccessRight = "Admin",
+                        GroupUserAccessRight = groupUserAccessRight,
                         PrincipalType = "None"
                     });
-                }
+                    //}
+
+                    //else
+                    //{
+                    //await powerBIClient.Groups.AddGroupUserAsync(workspaceIdGuid, new GroupUser
+                    //{
+                    //    Identifier=AdUser.UserPrincipalName,
+                    //    GroupUserAccessRight="Admin",
+                    //    PrincipalType="None"
+                    //});
+                    //}
+                
             }
         }
         public async Task UpdateGroupUser(string CCC_WorkspaceId, List<AddGroupModel> AadUserList )
@@ -105,14 +116,12 @@ namespace OIAnalyticsAPI.Services
                 //var users = powerBIClient.Groups.GetGroupUsers(workspaceIdGuid);
                 await powerBIClient.Groups.AddGroupUserAsync(workspaceIdGuid, new GroupUser
                        {
-                            EmailAddress = EmailAddress,
+                            Identifier = EmailAddress,
                             GroupUserAccessRight = Adperson.accessRight,
                             PrincipalType = "User"
                         });
             }
         }
-
-        
     }
 }
 

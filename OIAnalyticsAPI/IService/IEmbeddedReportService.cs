@@ -15,6 +15,6 @@ namespace OIAnalyticsAPI.IService
         Task<EmbeddedReportViewModel> EditReport(string CCC_WorkspaceId, string ReportId);
         Task<EmbeddedReportViewModel> CloneReport(string name, string CCC_WorkspaceId, string ReportId);
         Task<string> DeleteReport(string CCC_WorkspaceId, string ReportId);
-        Task ExportReport(string CCC_WorkspaceId, string ReportId,string ExportName,FileFormat ExportFileFormat);
+        Task ExportReport(string ExportType,string CCC_WorkspaceId, string ReportId,string ExportName,FileFormat ExportFileFormat);
     }
 }

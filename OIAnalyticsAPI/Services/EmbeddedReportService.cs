@@ -104,8 +104,23 @@ namespace OIAnalyticsAPI.Services
             return "Report deleted successfully";
         }
 
-        public async Task ExportReport(string CCC_WorkspaceId,string ReportId,string ExportName, FileFormat ExportFileFormat)
+        public async Task ExportReport(string ExportType,string CCC_WorkspaceId,string ReportId,string ExportName, FileFormat ExportFileFormat)
         {
+            switch (ExportType)
+            {
+                case "pdf":
+                    ExportFileFormat = FileFormat.PDF;
+                    break;
+                case "pptx":
+                    ExportFileFormat = FileFormat.PPTX;
+                    break;
+                case "png":
+                    ExportFileFormat = FileFormat.PNG;
+                    break;
+                default:
+                    throw new ApplicationException("Power BI reports do not support exort to " + ExportType);
+
+            }
             powerBIClient = pbi.GetPowerBiClient();
             Guid WSID = new Guid(CCC_WorkspaceId);
             Guid RepId = new Guid(ReportId);
@@ -156,6 +171,9 @@ namespace OIAnalyticsAPI.Services
                 exportStream.CopyTo(fileStream);
                 fileStream.Close();
             }
+
+
+
 
 
             //powerBIClient = pbi.GetPowerBiClient();

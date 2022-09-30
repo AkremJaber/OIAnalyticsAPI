@@ -9,6 +9,8 @@ namespace OIAnalyticsAPI.Models.Request_Models
     public class ExportReportRequest
     {
         public string CCC_WorkspaceId { get; set; }
+        public string ExportType { get; set; }
+
         public string ReportId { get; set; }
         public string ExportName { get; set; }
         public FileFormat ExportFileFormat { get; set; }

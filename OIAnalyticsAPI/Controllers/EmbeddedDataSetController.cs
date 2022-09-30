@@ -84,7 +84,6 @@ namespace OIAnalyticsAPI.Controllers
                         Message = ErrorDictionary.ErrorCodes[err],
                     });
                 }
-
             }
         }
     }

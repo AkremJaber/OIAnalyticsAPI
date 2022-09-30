@@ -17,7 +17,11 @@ namespace OIAnalyticsAPI.Models
            {106,"AAD User not found"},
            {107,"Not authorized to delete this dashboard"},
            {108,"Problem with Export"},
-           {109,"Problem with delete Dashboard"}
+           {109,"Problem with delete Dashboard"},
+           {110,"Please verify inputs"},
+           {111,"Something went wrong"}
+
+
 
 
 

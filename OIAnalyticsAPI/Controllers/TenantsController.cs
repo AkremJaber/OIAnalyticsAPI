@@ -16,10 +16,13 @@ namespace OIAnalyticsAPI.Controllers
     public class TenantsController : ControllerBase
     {
         public readonly ITenantsService tenantsService;
-        
-        public TenantsController(ITenantsService tenantsService)
+        public readonly IAssignPersonTenant assignService;
+
+
+        public TenantsController(ITenantsService tenantsService, IAssignPersonTenant assignService)
         {
             this.tenantsService = tenantsService;
+            this.assignService = assignService;
         }
 
         [HttpGet]
@@ -61,9 +64,8 @@ namespace OIAnalyticsAPI.Controllers
         {
             try
             {
-                Tenant tenant = await tenantsService.GetTenant(CCC_WorkspaceId);
+                var tenant = await tenantsService.GetTenant(CCC_WorkspaceId);
                 return tenant;
-
             }
             catch
             {
@@ -80,8 +82,9 @@ namespace OIAnalyticsAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Tenant>> AssignListPersonAdmin(TenantRequest tenantReq)
         {
-            Tenant tenant = await tenantsService.CreateNewTenant(tenantReq.CCC_Name, tenantReq.aadUser);
-            return tenant;
+            
+                Tenant tenant = await tenantsService.CreateNewTenant(tenantReq.CCC_Name, tenantReq.aadUser);
+                return tenant;
         }
 
         [Route("GroupUsers")]
@@ -90,6 +93,22 @@ namespace OIAnalyticsAPI.Controllers
         {
             var grps = await tenantsService.GetGrpUsers(CCC_WorkspaceId);
             return grps;
+        }
+        [Route("AddGroupUsers")]
+        [HttpPost]
+        public async Task<ActionResult<string>> UpdateGroupUser(TenantRequest tenantReq)
+        {
+            await assignService.AddGrpUsers(tenantReq.CCC_WorkspaceId, tenantReq.aadUser,tenantReq.groupUserAccessRight);
+            return "successfully updated";
+        }
+
+        [Route("DeleteGroupUsers")]
+        [HttpDelete]
+
+        public async Task<ActionResult<string>> DelGrpUsr(TenantRequest tenantReq)
+        {
+            await tenantsService.DeleteGroupUser(tenantReq.CCC_WorkspaceId, tenantReq.email);
+            return "deleted succefully";
         }
 
 

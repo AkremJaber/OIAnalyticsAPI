@@ -44,8 +44,8 @@ namespace OIAnalyticsAPI.Controllers
                     });
                 }
                 else
-                { 
-                    int err =103;
+                {
+                    int err = 103;
                     return NotFound(new Error
                     {
                         StatusCode = err,
@@ -117,8 +117,8 @@ namespace OIAnalyticsAPI.Controllers
                 }
 
             }
-            
         }
+
         [Route("DashboardDB")]
         [HttpGet]
         public async Task<ActionResult<DashboardDB>> GetByUID(string UID_CCCDashboard)

@@ -127,7 +127,7 @@ namespace OIAnalyticsAPI.Services
             var xobj = "<Key><T>CCCTenants</T><P>" + ccc_uid_Tenant + "</P></Key>";
             tenant.UID_CCCTenants = ccc_uid_Tenant;
             tenant.XObjectKey = xobj;
-            string adminUser = Configuration["DemoSettings:AdminUser"];
+            //string adminUser = Configuration["DemoSettings:AdminUser"];
             // add user as new workspace admin  AddGroupUserAsync
             await assignPersonTenant.UpdateGroupUser(tenant.CCC_WorkspaceId, AadUserDict);
 
@@ -146,6 +146,15 @@ namespace OIAnalyticsAPI.Services
             var grp = await powerBIClient.Groups.GetGroupUsersAsync(workspaceIdGuid);
             return grp;
         }
+
+        public async Task DeleteGroupUser(string CCC_WorkspaceId, string email)
+        {
+            powerBIClient = pbi.GetPowerBiClient();
+            Guid workspaceIdGuid = new Guid(CCC_WorkspaceId);
+            await powerBIClient.Groups.DeleteUserInGroupAsync(workspaceIdGuid, email);
+
+        }
+
 
         //public async Task UpdateOneUserTenant(string CCC_WorkspaceId, string email)
         //{
