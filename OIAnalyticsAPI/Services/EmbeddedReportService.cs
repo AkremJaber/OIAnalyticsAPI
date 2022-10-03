@@ -59,7 +59,7 @@ namespace OIAnalyticsAPI.Services
             var report = await powerBIClient.Reports.GetReportInGroupAsync(WorkspaceId, reportId);
             // generate read-only embed token for the report
             var datasetId = report.DatasetId;
-            var tokenRequest = new GenerateTokenRequest(TokenAccessLevel.Create, datasetId);
+            var tokenRequest = new GenerateTokenRequest(TokenAccessLevel.Edit, datasetId);
             var embedTokenResponse = await powerBIClient.Reports.GenerateTokenAsync(WorkspaceId, reportId, tokenRequest);
             var embedToken = embedTokenResponse.Token;
             // return report embedding data to caller

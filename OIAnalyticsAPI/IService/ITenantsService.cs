@@ -19,6 +19,7 @@ namespace OIAnalyticsAPI.IService
         Task<Tenant> CreateNewTenant(string name, List<AddGroupModel> AadUser);
         Task<GroupUsers> GetGrpUsers(string CCC_WorkspaceId);
         Task DeleteGroupUser(string CCC_WorkspaceId, string email);
+        Task UpdateGroupUser(string CCC_WorkspaceId, string principleType, string groupUserAccessRight, string identifier);
         //Task UpdateOneUserTenant(string CCC_WorkspaceId, string email);
         //Task UpdateDictUserTenant(string CCC_WorkspaceId, string UID_Person);
     }

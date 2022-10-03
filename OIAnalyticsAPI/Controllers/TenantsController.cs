@@ -102,13 +102,22 @@ namespace OIAnalyticsAPI.Controllers
             return "successfully updated";
         }
 
-        [Route("DeleteGroupUsers")]
-        [HttpDelete]
+        
+        [HttpDelete("{CCC_WorkspaceId}/{email}")]
 
-        public async Task<ActionResult<string>> DelGrpUsr(TenantRequest tenantReq)
+        public async Task<ActionResult<string>> DelGrpUsr(string CCC_WorkspaceId, string email)
         {
-            await tenantsService.DeleteGroupUser(tenantReq.CCC_WorkspaceId, tenantReq.email);
+           // string mail = email.ToString();
+            await tenantsService.DeleteGroupUser(CCC_WorkspaceId, email);
             return "deleted succefully";
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<string>> UpdateGroupUserAccessRight(string CCC_WorkspaceId, string principleType, string groupUserAccessRight, string identifier)
+        {
+            await tenantsService.UpdateGroupUser(CCC_WorkspaceId, principleType, groupUserAccessRight, identifier);
+            return "updated succesfully";
+
         }
 
 

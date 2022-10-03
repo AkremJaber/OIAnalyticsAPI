@@ -144,6 +144,7 @@ namespace OIAnalyticsAPI.Services
             powerBIClient = pbi.GetPowerBiClient();
             Guid workspaceIdGuid = new Guid(CCC_WorkspaceId);
             var grp = await powerBIClient.Groups.GetGroupUsersAsync(workspaceIdGuid);
+
             return grp;
         }
 
@@ -151,8 +152,23 @@ namespace OIAnalyticsAPI.Services
         {
             powerBIClient = pbi.GetPowerBiClient();
             Guid workspaceIdGuid = new Guid(CCC_WorkspaceId);
-            await powerBIClient.Groups.DeleteUserInGroupAsync(workspaceIdGuid, email);
+            var mail= email.Replace('|', '#');
+            await powerBIClient.Groups.DeleteUserInGroupAsync(workspaceIdGuid, mail);
 
+        }
+
+
+
+        public async Task UpdateGroupUser(string CCC_WorkspaceId, string principleType, string groupUserAccessRight, string identifier)
+        {
+            powerBIClient = pbi.GetPowerBiClient();
+            Guid workspaceIdGuid = new Guid(CCC_WorkspaceId);
+            await powerBIClient.Groups.UpdateGroupUserAsync(workspaceIdGuid, new GroupUser
+            {
+                Identifier = identifier,
+                PrincipalType = principleType,
+                GroupUserAccessRight = groupUserAccessRight
+            });
         }
 
 
