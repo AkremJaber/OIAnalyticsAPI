@@ -146,9 +146,10 @@ namespace OIAnalyticsAPI.Services
             var grp = await powerBIClient.Groups.GetGroupUsersAsync(workspaceIdGuid);
             var x = grp.Value;
             List<UserGroup> GU = new List<UserGroup>();
-            UserGroup user = new UserGroup();
+            
             foreach (var item in x)
             {
+                UserGroup user = new UserGroup();
                 user.displayName = item.DisplayName;
                 user.emailAddress = item.EmailAddress;
                 user.groupUserAccessRight = item.GroupUserAccessRight;
@@ -157,7 +158,6 @@ namespace OIAnalyticsAPI.Services
                 GU.Add(user);
             }
             return GU;
-
         }
 
         public async Task DeleteGroupUser(string CCC_WorkspaceId, string email)
@@ -175,9 +175,10 @@ namespace OIAnalyticsAPI.Services
         {
             powerBIClient = pbi.GetPowerBiClient();
             Guid workspaceIdGuid = new Guid(CCC_WorkspaceId);
+            var mail = identifier.Replace('|', '#');
             await powerBIClient.Groups.UpdateGroupUserAsync(workspaceIdGuid, new GroupUser
             {
-                Identifier = identifier,
+                Identifier = mail,
                 PrincipalType = principleType,
                 GroupUserAccessRight = groupUserAccessRight
             });

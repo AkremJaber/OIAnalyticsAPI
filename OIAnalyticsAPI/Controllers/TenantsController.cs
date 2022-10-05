@@ -115,7 +115,7 @@ namespace OIAnalyticsAPI.Controllers
             return "deleted succefully";
         }
 
-        [HttpPut]
+        [HttpPut("{CCC_WorkspaceId}/{principleType}/{groupUserAccessRight}/{identifier}")]
         public async Task<ActionResult<string>> UpdateGroupUserAccessRight(string CCC_WorkspaceId, string principleType, string groupUserAccessRight, string identifier)
         {
             await tenantsService.UpdateGroupUser(CCC_WorkspaceId, principleType, groupUserAccessRight, identifier);
