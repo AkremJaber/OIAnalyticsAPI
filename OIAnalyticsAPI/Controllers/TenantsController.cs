@@ -89,11 +89,14 @@ namespace OIAnalyticsAPI.Controllers
 
         [Route("GroupUsers")]
         [HttpGet]
-        public async Task<ActionResult<GroupUsers>> GrpUsers(string CCC_WorkspaceId)
+        public async Task<ActionResult<UserGroupModel>> GrpUsers(string CCC_WorkspaceId)
         {
             var grps = await tenantsService.GetGrpUsers(CCC_WorkspaceId);
-            return grps;
+            UserGroupModel user = new UserGroupModel();
+            user.userGroup=grps;
+            return user;
         }
+
         [Route("AddGroupUsers")]
         [HttpPost]
         public async Task<ActionResult<string>> UpdateGroupUser(TenantRequest tenantReq)

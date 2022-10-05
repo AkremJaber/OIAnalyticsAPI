@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace OIAnalyticsAPI.Models
 {
     public class Tenant
-    {   [Key]
+    {   
+        [Key]
         public string CCC_WorkspaceId { get; set; }
         public string CCC_Name { get; set; }
         public string CCC_WorkspaceUrl { get; set; }

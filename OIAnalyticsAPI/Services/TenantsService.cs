@@ -139,13 +139,25 @@ namespace OIAnalyticsAPI.Services
             return tenant;
         }
 
-        public async Task<GroupUsers> GetGrpUsers(string CCC_WorkspaceId)
+        public async Task<IList<UserGroup>> GetGrpUsers(string CCC_WorkspaceId)
         {
             powerBIClient = pbi.GetPowerBiClient();
             Guid workspaceIdGuid = new Guid(CCC_WorkspaceId);
             var grp = await powerBIClient.Groups.GetGroupUsersAsync(workspaceIdGuid);
+            var x = grp.Value;
+            List<UserGroup> GU = new List<UserGroup>();
+            UserGroup user = new UserGroup();
+            foreach (var item in x)
+            {
+                user.displayName = item.DisplayName;
+                user.emailAddress = item.EmailAddress;
+                user.groupUserAccessRight = item.GroupUserAccessRight;
+                user.identifier = item.Identifier;
+                user.principalType = item.PrincipalType;
+                GU.Add(user);
+            }
+            return GU;
 
-            return grp;
         }
 
         public async Task DeleteGroupUser(string CCC_WorkspaceId, string email)
