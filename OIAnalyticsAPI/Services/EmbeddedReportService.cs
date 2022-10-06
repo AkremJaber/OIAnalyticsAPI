@@ -104,73 +104,131 @@ namespace OIAnalyticsAPI.Services
             return "Report deleted successfully";
         }
 
-        public async Task ExportReport(string ExportType,string CCC_WorkspaceId,string ReportId,string ExportName, FileFormat ExportFileFormat)
+        public async Task ExportReport(string CCC_WorkspaceId,string ReportId,string ExportName, FileFormat ExportFileFormat)
         {
-            switch (ExportType)
-            {
-                case "pdf":
-                    ExportFileFormat = FileFormat.PDF;
-                    break;
-                case "pptx":
-                    ExportFileFormat = FileFormat.PPTX;
-                    break;
-                case "png":
-                    ExportFileFormat = FileFormat.PNG;
-                    break;
-                default:
-                    throw new ApplicationException("Power BI reports do not support exort to " + ExportType);
-
-            }
             powerBIClient = pbi.GetPowerBiClient();
             Guid WSID = new Guid(CCC_WorkspaceId);
-            Guid RepId = new Guid(ReportId);
+            Guid REPID = new Guid(ReportId);
+
+            var powerBIReportExportConfiguration = new PowerBIReportExportConfiguration
+            {
+                Settings = new ExportReportSettings
+                {
+                    Locale = "en-us",
+                },
+                // Note that page names differ from the page display names
+                // To get the page names use the GetPages REST API
+               
+            };
+            // create export report request
             var exportRequest = new ExportReportRequest
             {
                 Format = ExportFileFormat,
-                PowerBIReportConfiguration = new PowerBIReportExportConfiguration
-                {
-                    Settings = new ExportReportSettings
-                    {
-                        IncludeHiddenPages = false
-                    }
-                }
+                PowerBIReportConfiguration = powerBIReportExportConfiguration
+                
             };
 
-            //if (ExportFilter != "")
-            //{
-            //    exportRequest.PowerBIReportConfiguration.ReportLevelFilters =
-            //      new List<ExportFilter>() {
-            //new ExportFilter { Filter = ExportFilter }
-            //      };
-            //}
-
-            var export = await powerBIClient.Reports.ExportToFileInGroupAsync(WSID, RepId, exportRequest);
+            // call ExportToFileInGroup to start async export job
+            Export export = await powerBIClient.Reports.ExportToFileInGroupAsync(WSID, REPID, exportRequest);
 
             string exportId = export.Id;
+
             do
             {
+                //poll every 10 seconds to see if export job has completed
                 System.Threading.Thread.Sleep(10000);
-                export = await powerBIClient.Reports.GetExportToFileStatusInGroupAsync(WSID, RepId, exportId);
-                Console.WriteLine(" - Export status: " + export.PercentComplete.ToString() + "% complete");
+
+                export = await powerBIClient.Reports.GetExportToFileStatusInGroupAsync(WSID, REPID, exportId);
+
+                // continue to poll until export job status is equal to Suceeded or Failed
             } while (export.Status != ExportState.Succeeded && export.Status != ExportState.Failed);
 
             if (export.Status == ExportState.Failed)
             {
+                // deal with failure
                 Console.WriteLine("Export failed!");
             }
+            string pbixPath = @"C:\API\OIAnalyticsAPI\OIAnalyticsAPI\PBIX\Exports";
 
             if (export.Status == ExportState.Succeeded)
             {
-                string ExportFolderPath = Configuration["ExportPath:export"];
+                // retreive file name extension from export object to construct file name
                 string FileName = ExportName + export.ResourceFileExtension.ToLower();
-                string FilePath = ExportFolderPath + FileName;
+                string FilePath = pbixPath + FileName;
 
-                Console.WriteLine(" - Saving exported file to " + FilePath);
-                var exportStream = await powerBIClient.Reports.GetFileOfExportToFileInGroupAsync(WSID, RepId, exportId);
+                // get export stream with file
+                var exportStream = await powerBIClient.Reports.GetFileOfExportToFileInGroupAsync(WSID, REPID, exportId);
+
+                // save exported file stream to local file
                 FileStream fileStream = File.Create(FilePath);
                 exportStream.CopyTo(fileStream);
                 fileStream.Close();
             }
+            //switch (ExportType)
+            //{
+            //    case "pdf":
+            //        ExportFileFormat = FileFormat.PDF;
+            //        break;
+            //    case "pptx":
+            //        ExportFileFormat = FileFormat.PPTX;
+            //        break;
+            //    case "png":
+            //        ExportFileFormat = FileFormat.PNG;
+            //        break;
+            //    default:
+            //        throw new ApplicationException("Power BI reports do not support exort to " + ExportType);
+
+            //}
+            //powerBIClient = pbi.GetPowerBiClient();
+            //Guid WSID = new Guid(CCC_WorkspaceId);
+            //Guid RepId = new Guid(ReportId);
+            //var exportRequest = new ExportReportRequest
+            //{
+            //    Format = ExportFileFormat,
+            //    PowerBIReportConfiguration = new PowerBIReportExportConfiguration
+            //    {
+            //        Settings = new ExportReportSettings
+            //        {
+            //            IncludeHiddenPages = false
+            //        }
+            //    }
+            //};
+
+            ////if (ExportFilter != "")
+            ////{
+            ////    exportRequest.PowerBIReportConfiguration.ReportLevelFilters =
+            ////      new List<ExportFilter>() {
+            ////new ExportFilter { Filter = ExportFilter }
+            ////      };
+            ////}
+
+            //var export = await powerBIClient.Reports.ExportToFileInGroupAsync(WSID, RepId, exportRequest);
+
+            //string exportId = export.Id;
+            //do
+            //{
+            //    System.Threading.Thread.Sleep(10000);
+            //    export = await powerBIClient.Reports.GetExportToFileStatusInGroupAsync(WSID, RepId, exportId);
+            //    Console.WriteLine(" - Export status: " + export.PercentComplete.ToString() + "% complete");
+            //} while (export.Status != ExportState.Succeeded && export.Status != ExportState.Failed);
+
+            //if (export.Status == ExportState.Failed)
+            //{
+            //    Console.WriteLine("Export failed!");
+            //}
+
+            //if (export.Status == ExportState.Succeeded)
+            //{
+            //    string ExportFolderPath = Configuration["ExportPath:export"];
+            //    string FileName = ExportName + export.ResourceFileExtension.ToLower();
+            //    string FilePath = ExportFolderPath + FileName;
+
+            //    Console.WriteLine(" - Saving exported file to " + FilePath);
+            //    var exportStream = await powerBIClient.Reports.GetFileOfExportToFileInGroupAsync(WSID, RepId, exportId);
+            //    FileStream fileStream = File.Create(FilePath);
+            //    exportStream.CopyTo(fileStream);
+            //    fileStream.Close();
+            //}
 
 
 
